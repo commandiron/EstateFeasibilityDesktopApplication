@@ -1,7 +1,7 @@
-package com.arsa_fizibilite_app_by_command_.ui.feature.main
+package com.arsa_fizibilite_app_by_command.ui.feature.main
 
-import com.arsa_fizibilite_app_by_command_.data.repo.MyRepo
-import com.arsa_fizibilite_app_by_command_.util.ViewModel
+import com.arsa_fizibilite_app_by_command.data.repo.MyRepo
+import com.arsa_fizibilite_app_by_command.util.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

@@ -1,7 +1,7 @@
-package com.arsa_fizibilite_app_by_command_.test
+package com.arsa_fizibilite_app_by_command.test
 
-import com.arsa_fizibilite_app_by_command_.data.di.module.MyModule
-import com.arsa_fizibilite_app_by_command_.data.repo.MyRepo
+import com.arsa_fizibilite_app_by_command.data.di.module.MyModule
+import com.arsa_fizibilite_app_by_command.data.repo.MyRepo
 import dagger.Component
 import javax.inject.Singleton
 

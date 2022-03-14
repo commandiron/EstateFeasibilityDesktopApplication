@@ -1,4 +1,4 @@
-package com.arsa_fizibilite_app_by_command_.ui.navigation
+package com.arsa_fizibilite_app_by_command.ui.navigation
 
 import androidx.compose.runtime.Composable
 

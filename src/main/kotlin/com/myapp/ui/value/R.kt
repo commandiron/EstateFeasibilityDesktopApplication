@@ -1,4 +1,4 @@
-package com.arsa_fizibilite_app_by_command_.ui.value
+package com.arsa_fizibilite_app_by_command.ui.value
 
 import androidx.compose.ui.graphics.Color
 
@@ -13,6 +13,7 @@ object R {
 
     @Suppress("ClassName")
     object string {
+        const val ACTION_MAIN_HESAPLA = "Hesapla!"
         const val ACTION_MAIN_CLICK_ME = "Click Me!"
     }
 }

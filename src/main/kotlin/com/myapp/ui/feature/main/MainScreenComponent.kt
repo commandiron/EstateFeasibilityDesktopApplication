@@ -1,11 +1,11 @@
-package com.arsa_fizibilite_app_by_command_.ui.feature.main
+package com.arsa_fizibilite_app_by_command.ui.feature.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
-import com.arsa_fizibilite_app_by_command_.di.AppComponent
-import com.arsa_fizibilite_app_by_command_.ui.navigation.Component
+import com.arsa_fizibilite_app_by_command.di.AppComponent
+import com.arsa_fizibilite_app_by_command.ui.navigation.Component
 import javax.inject.Inject
 
 class MainScreenComponent(

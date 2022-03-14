@@ -1,4 +1,4 @@
-package com.arsa_fizibilite_app_by_command_.ui.value
+package com.arsa_fizibilite_app_by_command.ui.value
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
@@ -13,7 +13,7 @@ val GoogleSans = FontFamily(
     Font("fonts/GoogleSans-Bold.ttf", FontWeight.Bold),
 )
 
-val arsa_fizibilite_app_by_command_Typography = Typography(
+val arsa_fizibilite_app_by_commandTypography = Typography(
 
     defaultFontFamily = GoogleSans,
 

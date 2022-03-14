@@ -1,8 +1,8 @@
-package com.arsa_fizibilite_app_by_command_.ui.feature.splash
+package com.arsa_fizibilite_app_by_command.ui.feature.splash
 
 import com.github.theapache64.expekt.should
-import com.arsa_fizibilite_app_by_command_.test.MainCoroutineRule
-import com.arsa_fizibilite_app_by_command_.test.MyDaggerMockRule
+import com.arsa_fizibilite_app_by_command.test.MainCoroutineRule
+import com.arsa_fizibilite_app_by_command.test.MyDaggerMockRule
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule

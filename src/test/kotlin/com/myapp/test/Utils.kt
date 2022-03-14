@@ -1,4 +1,4 @@
-package com.arsa_fizibilite_app_by_command_.test
+package com.arsa_fizibilite_app_by_command.test
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking

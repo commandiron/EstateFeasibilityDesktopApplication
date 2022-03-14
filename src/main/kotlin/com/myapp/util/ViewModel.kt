@@ -1,4 +1,4 @@
-package com.arsa_fizibilite_app_by_command_.util
+package com.arsa_fizibilite_app_by_command.util
 
 import kotlinx.coroutines.CoroutineScope
 

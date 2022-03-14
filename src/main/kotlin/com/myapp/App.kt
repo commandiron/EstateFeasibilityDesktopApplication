@@ -1,8 +1,8 @@
-package com.arsa_fizibilite_app_by_command_
+package com.arsa_fizibilite_app_by_command
 
 
-import com.arsa_fizibilite_app_by_command_.model.AppArgs
-import com.arsa_fizibilite_app_by_command_.ui.feature.MainActivity
+import com.arsa_fizibilite_app_by_command.model.AppArgs
+import com.arsa_fizibilite_app_by_command.ui.feature.MainActivity
 import com.theapache64.cyclone.core.Application
 import com.toxicbakery.logging.Arbor
 import com.toxicbakery.logging.Seedling
@@ -37,7 +37,7 @@ class App(
 fun main() {
 
     val appArgs = AppArgs(
-        appName = "arsa_fizibilite_app_by_command_", // To show on title bar
+        appName = "arsa_fizibilite_app_by_command", // To show on title bar
         version = "v1.0.0", // To show on title inside brackets
         versionCode = 100 // To compare with latest version code (in case if you want to prompt update)
     )
