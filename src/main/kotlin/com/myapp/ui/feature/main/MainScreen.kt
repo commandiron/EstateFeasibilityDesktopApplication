@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.main
+package com.arsa_fizibilite_app_by_command_.ui.feature.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -10,7 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.myapp.ui.value.R
+import com.arsa_fizibilite_app_by_command_.ui.value.R
 
 
 @Composable

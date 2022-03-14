@@ -1,4 +1,4 @@
-package com.myapp.data.repo
+package com.arsa_fizibilite_app_by_command_.data.repo
 
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.myapp.ui.value
+package com.arsa_fizibilite_app_by_command_.ui.value
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -21,13 +21,13 @@ val DarkTheme = darkColors(
 )
 
 @Composable
-fun MyAppTheme(
+fun arsa_fizibilite_app_by_command_Theme(
     isDark: Boolean = true, // TODO: If you want to support both light theme and dark theme, you'll need to implement it manually.
     content: @Composable ColumnScope.() -> Unit,
 ) {
     MaterialTheme(
         colors = if (isDark) DarkTheme else LightTheme,
-        typography = MyAppTypography
+        typography = arsa_fizibilite_app_by_command_Typography
     ) {
         Surface {
             Column {

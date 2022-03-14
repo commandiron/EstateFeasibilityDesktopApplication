@@ -1,4 +1,4 @@
-package com.myapp.ui.navigation
+package com.arsa_fizibilite_app_by_command_.ui.navigation
 
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
@@ -7,10 +7,10 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.cros
 import com.arkivanov.decompose.replaceCurrent
 import com.arkivanov.decompose.router
 import com.arkivanov.decompose.statekeeper.Parcelable
-import com.myapp.di.AppComponent
-import com.myapp.di.DaggerAppComponent
-import com.myapp.ui.feature.main.MainScreenComponent
-import com.myapp.ui.feature.splash.SplashScreenComponent
+import com.arsa_fizibilite_app_by_command_.di.AppComponent
+import com.arsa_fizibilite_app_by_command_.di.DaggerAppComponent
+import com.arsa_fizibilite_app_by_command_.ui.feature.main.MainScreenComponent
+import com.arsa_fizibilite_app_by_command_.ui.feature.splash.SplashScreenComponent
 
 /**
  * All navigation decisions are made from here

@@ -1,7 +1,7 @@
-package com.myapp.ui.feature.splash
+package com.arsa_fizibilite_app_by_command_.ui.feature.splash
 
-import com.myapp.data.repo.MyRepo
-import com.myapp.util.ViewModel
+import com.arsa_fizibilite_app_by_command_.data.repo.MyRepo
+import com.arsa_fizibilite_app_by_command_.util.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

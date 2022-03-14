@@ -1,9 +1,9 @@
-package com.myapp.ui.feature.splash
+package com.arsa_fizibilite_app_by_command_.ui.feature.splash
 
 import androidx.compose.runtime.*
 import com.arkivanov.decompose.ComponentContext
-import com.myapp.di.AppComponent
-import com.myapp.ui.navigation.Component
+import com.arsa_fizibilite_app_by_command_.di.AppComponent
+import com.arsa_fizibilite_app_by_command_.ui.navigation.Component
 import javax.inject.Inject
 
 class SplashScreenComponent(

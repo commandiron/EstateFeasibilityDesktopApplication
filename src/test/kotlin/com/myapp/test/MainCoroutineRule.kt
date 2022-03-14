@@ -1,4 +1,4 @@
-package com.myapp.test
+package com.arsa_fizibilite_app_by_command_.test
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

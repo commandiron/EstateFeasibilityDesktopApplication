@@ -1,10 +1,10 @@
-package com.myapp.ui.feature.main
+package com.arsa_fizibilite_app_by_command_.ui.feature.main
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.myapp.data.repo.MyRepo
-import com.myapp.ui.value.R
+import com.arsa_fizibilite_app_by_command_.data.repo.MyRepo
+import com.arsa_fizibilite_app_by_command_.ui.value.R
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers

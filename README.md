@@ -33,7 +33,7 @@
    ![](https://i.imgur.com/vJ8OCIb.png)
 
 1. Clone your repo and open it in an IDE
-1. Replace all `myapp` and `My App` instances with your app name. For this, you can use `Control + Shift + R` for the
+1. Replace all `arsa_fizibilite_app_by_command_` and `arsa_fizibilite_app_by_command_` instances with your app name. For this, you can use `Control + Shift + R` for the
    find and replace (IntelliJ)
 
 ## OR

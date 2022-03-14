@@ -1,4 +1,4 @@
-package com.myapp.ui.value
+package com.arsa_fizibilite_app_by_command_.ui.value
 
 import androidx.compose.ui.graphics.Color
 

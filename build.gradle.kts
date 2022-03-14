@@ -9,7 +9,7 @@ plugins {
     id("org.jetbrains.compose") version "1.0.0-beta1"
 }
 
-group = "com.myapp"
+group = "com.arsa_fizibilite_app_by_command_"
 version = "1.0.0"
 
 repositories {
@@ -73,10 +73,10 @@ tasks.withType<KotlinCompile>() {
 
 compose.desktop {
     application {
-        mainClass = "com.myapp.AppKt"
+        mainClass = "com.arsa_fizibilite_app_by_command_.AppKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "myapp"
+            packageName = "arsa_fizibilite_app_by_command_"
             packageVersion = "1.0.0"
 
             val iconsRoot = project.file("src/main/resources/drawables")

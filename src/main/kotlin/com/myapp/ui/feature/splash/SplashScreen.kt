@@ -1,4 +1,4 @@
-package com.myapp.ui.feature.splash
+package com.arsa_fizibilite_app_by_command_.ui.feature.splash
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

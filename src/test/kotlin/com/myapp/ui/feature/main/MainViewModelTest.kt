@@ -1,8 +1,8 @@
-package com.myapp.ui.feature.main
+package com.arsa_fizibilite_app_by_command_.ui.feature.main
 
 import com.github.theapache64.expekt.should
-import com.myapp.data.repo.MyRepo
-import com.myapp.test.MyDaggerMockRule
+import com.arsa_fizibilite_app_by_command_.data.repo.MyRepo
+import com.arsa_fizibilite_app_by_command_.test.MyDaggerMockRule
 import it.cosenonjaviste.daggermock.InjectFromComponent
 import org.junit.Rule
 import org.junit.Test

@@ -1,7 +1,7 @@
-package com.myapp.di
+package com.arsa_fizibilite_app_by_command_.di
 
-import com.myapp.ui.feature.main.MainScreenComponent
-import com.myapp.ui.feature.splash.SplashScreenComponent
+import com.arsa_fizibilite_app_by_command_.ui.feature.main.MainScreenComponent
+import com.arsa_fizibilite_app_by_command_.ui.feature.splash.SplashScreenComponent
 import dagger.Component
 import javax.inject.Singleton
 

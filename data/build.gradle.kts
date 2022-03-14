@@ -3,7 +3,7 @@ plugins {
     kotlin("kapt")
 }
 
-group = "com.myapp"
+group = "com.arsa_fizibilite_app_by_command_"
 version = "1.0.0"
 
 repositories {
