@@ -9,8 +9,9 @@ import com.arkivanov.decompose.router
 import com.arkivanov.decompose.statekeeper.Parcelable
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.di.DaggerAppComponent
-import com.arsa_fizibilite_app_by_command.ui.feature.main.MainScreenComponent
+import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
+import com.myapp.ui.feature.first.FirstScreenComponent
 
 /**
  * All navigation decisions are made from here
@@ -24,6 +25,7 @@ class NavHostComponent(
      */
     private sealed class Config : Parcelable {
         object Splash : Config()
+        object First : Config()
         object Main : Config()
     }
 
@@ -34,7 +36,7 @@ class NavHostComponent(
      * Router configuration
      */
     private val router = router<Config, Component>(
-        initialConfiguration = Config.Main,
+        initialConfiguration = Config.First,
         childFactory = ::createScreenComponent
     )
 
@@ -48,7 +50,12 @@ class NavHostComponent(
                 componentContext = componentContext,
                 onSplashFinished = ::onSplashFinished,
             )
-            Config.Main -> MainScreenComponent(
+            Config.First -> FirstScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext,
+                onButtonClicked = ::toSecondScreen
+            )
+            Config.Main -> SecondScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext
             )
@@ -68,7 +75,15 @@ class NavHostComponent(
     /**
      * Invoked when splash finish data sync
      */
+
     private fun onSplashFinished() {
+        router.replaceCurrent(Config.Main)
+    }
+    private fun toFirstScreen() {
+        router.replaceCurrent(Config.First)
+    }
+
+    private fun toSecondScreen() {
         router.replaceCurrent(Config.Main)
     }
 }

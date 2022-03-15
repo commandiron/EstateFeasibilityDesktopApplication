@@ -5,6 +5,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.arsa_fizibilite_app_by_command.data.repo.MyRepo
 import com.arsa_fizibilite_app_by_command.ui.value.R
+import com.myapp.ui.feature.AppViewModel
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +30,8 @@ internal class MainScreenTest {
     @Before
     fun beforeEvery() {
         composeRule.setContent {
-            MainScreen(
-                MainViewModel(fakeRepo)
+            SecondScreen(
+                AppViewModel(fakeRepo)
             )
         }
     }
@@ -38,7 +39,7 @@ internal class MainScreenTest {
     @Test
     fun `Click changes the text`() {
         runBlocking(Dispatchers.Main) {
-            composeRule.onNodeWithText(MainViewModel.INIT_WELCOME_MSG).assertExists()
+            composeRule.onNodeWithText(AppViewModel.INIT_WELCOME_MSG).assertExists()
             composeRule.onNodeWithText(R.string.ACTION_MAIN_CLICK_ME).performClick()
             composeRule.awaitIdle()
             composeRule.onNodeWithText(FAKE_WELCOME_MSG).assertExists()
