@@ -4,12 +4,14 @@ import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfadeScale
-import com.arkivanov.decompose.replaceCurrent
-import com.arkivanov.decompose.router
-import com.arkivanov.decompose.statekeeper.Parcelable
+import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.replaceCurrent
+import com.arkivanov.decompose.router.router
+import com.arkivanov.essenty.parcelable.Parcelable
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.di.DaggerAppComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
+import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreen
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
 import com.myapp.ui.feature.first.FirstScreenComponent
 
@@ -35,8 +37,9 @@ class NavHostComponent(
     /**
      * Router configuration
      */
-    private val router = router<Config, Component>(
+        private val router = router<Config, Component>(
         initialConfiguration = Config.First,
+        handleBackButton = true,
         childFactory = ::createScreenComponent
     )
 
@@ -77,13 +80,14 @@ class NavHostComponent(
      */
 
     private fun onSplashFinished() {
-        router.replaceCurrent(Config.Main)
+        router.push(Config.Main)
     }
+
     private fun toFirstScreen() {
-        router.replaceCurrent(Config.First)
+        router.push(Config.First)
     }
 
     private fun toSecondScreen() {
-        router.replaceCurrent(Config.Main)
+        router.push(Config.Main)
     }
 }

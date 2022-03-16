@@ -15,14 +15,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
-import com.arkivanov.decompose.extensions.compose.jetbrains.rememberRootComponent
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleController
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arsa_fizibilite_app_by_command.App
 import com.arsa_fizibilite_app_by_command.ui.navigation.NavHostComponent
 import com.arsa_fizibilite_app_by_command.ui.value.arsa_fizibilite_app_by_commandTheme
 import com.theapache64.cyclone.core.Activity
 import com.theapache64.cyclone.core.Intent
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
 import androidx.compose.ui.window.application as setContent
 
 /**
@@ -40,18 +40,24 @@ class MainActivity : Activity() {
     override fun onCreate() {
         super.onCreate()
 
+        val lifecycle = LifecycleRegistry()
+
         setContent {
+
+            val windowState = rememberWindowState(width = 720.dp, height = 720.dp)
+
+            LifecycleController(lifecycle, windowState)
+
             Window(
                 resizable = false,
                 onCloseRequest = ::exitApplication,
                 title = "${App.appArgs.appName} (${App.appArgs.version})",
                 icon = painterResource("drawables/launcher_icons/system.png"),
-                state = rememberWindowState(width = 720.dp, height = 720.dp),
+                state = windowState,
             ) {
                 arsa_fizibilite_app_by_commandTheme {
-                    // Igniting navigation
-                    rememberRootComponent(factory = ::NavHostComponent)
-                        .render()
+
+                    NavHostComponent(DefaultComponentContext(lifecycle)).render()
                 }
             }
 

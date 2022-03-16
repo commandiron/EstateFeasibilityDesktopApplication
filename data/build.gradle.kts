@@ -13,6 +13,20 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
+    // Jsoup
+    val jsoupVersion = "1.14.3"
+    implementation("org.jsoup:jsoup:$jsoupVersion")
+
+    // Selenium
+    val seleniumVersion = "4.1.2"
+    implementation("org.seleniumhq.selenium:selenium-java:$seleniumVersion")
+    implementation("io.github.bonigarcia:webdrivermanager:5.1.0")
+
+    // Coroutines
+    val coroutinesVersion = "1.6.0"
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+
     // Dagger
     val daggerVersion: String by rootProject.extra
     api("com.google.dagger:dagger:$daggerVersion")

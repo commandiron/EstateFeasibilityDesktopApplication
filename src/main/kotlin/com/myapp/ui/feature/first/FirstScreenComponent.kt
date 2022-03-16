@@ -5,7 +5,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arsa_fizibilite_app_by_command.di.AppComponent
-import com.myapp.ui.feature.AppViewModel
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
 import javax.inject.Inject
 
@@ -15,7 +14,7 @@ class FirstScreenComponent(
     private val onButtonClicked: () -> Unit,
 ) : Component, ComponentContext by componentContext {
     @Inject
-    lateinit var viewModel: AppViewModel
+    lateinit var viewModel: FirstViewModel
 
     init {
         appComponent.inject(this)

@@ -6,7 +6,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
-import com.myapp.ui.feature.AppViewModel
+import com.myapp.ui.feature.second.SecondViewModel
 import javax.inject.Inject
 
 class SecondScreenComponent(
@@ -14,7 +14,7 @@ class SecondScreenComponent(
     private val componentContext: ComponentContext,
 ) : Component, ComponentContext by componentContext {
     @Inject
-    lateinit var viewModel: AppViewModel
+    lateinit var viewModel: SecondViewModel
 
     init {
         appComponent.inject(this)

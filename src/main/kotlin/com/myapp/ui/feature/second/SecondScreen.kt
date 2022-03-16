@@ -7,43 +7,44 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arsa_fizibilite_app_by_command.ui.value.R
-import com.myapp.ui.feature.AppViewModel
+import com.myapp.data.model.FizibiliteModel
 import com.myapp.ui.feature.second.CustomBasicTextField
+import com.myapp.ui.feature.second.SecondViewModel
 
 @Composable
 fun SecondScreen(
-    appViewModel: AppViewModel,
+    secondViewModel: SecondViewModel,
 ) {
 
-    var projeAdi by remember { mutableStateOf("") }
-    var projeSehir by remember { mutableStateOf("") }
-    var projeIlce by remember { mutableStateOf("") }
-    var ada by remember { mutableStateOf("") }
-    var parsel by remember { mutableStateOf("") }
+    val projeAdi by remember { mutableStateOf("") }
+    val projeSehir by remember { mutableStateOf("") }
+    val projeIlce by remember { mutableStateOf("") }
+    val ada by remember { mutableStateOf("") }
+    val parsel by remember { mutableStateOf("") }
 
     var arsaAlani by remember{ mutableStateOf("") }
-    arsaAlani = appViewModel.arsaAlani.value
+    arsaAlani = secondViewModel.arsaAlani.value
 
     var insaatBirimMaliyeti by remember{ mutableStateOf("") }
-    insaatBirimMaliyeti = appViewModel.insaatBirimMaliyeti.value
+    insaatBirimMaliyeti = secondViewModel.insaatBirimMaliyeti.value
 
     var brutAlanBirimSatisFiyati by remember{ mutableStateOf("") }
-    brutAlanBirimSatisFiyati = appViewModel.brutAlanBirimSatisFiyati.value
+    brutAlanBirimSatisFiyati = secondViewModel.brutAlanBirimSatisFiyati.value
 
     var hedefKarOrani by remember{ mutableStateOf("") }
-    hedefKarOrani = appViewModel.hedefKarOrani.value
+    hedefKarOrani = secondViewModel.hedefKarOrani.value
 
     var bodrumKatAlani by remember{ mutableStateOf("") }
-    bodrumKatAlani = appViewModel.bodrumKatAlani.value
+    bodrumKatAlani = secondViewModel.bodrumKatAlani.value
 
     var bodrumKatBirimMaliyeti by remember{ mutableStateOf("") }
-    bodrumKatBirimMaliyeti = appViewModel.bodrumKatBirimMaliyeti.value
+    bodrumKatBirimMaliyeti = secondViewModel.bodrumKatBirimMaliyeti.value
 
     var bodrumKatAdedi by remember{ mutableStateOf("") }
-    bodrumKatAdedi = appViewModel.bodrumKatAdedi.value
+    bodrumKatAdedi = secondViewModel.bodrumKatAdedi.value
 
     var mevcutDaireSayisi by remember{ mutableStateOf("") }
-    mevcutDaireSayisi = appViewModel.mevcutDaireSayisi.value
+    mevcutDaireSayisi = secondViewModel.mevcutDaireSayisi.value
 
     BoxWithConstraints (
         modifier = Modifier.fillMaxSize(),
@@ -60,6 +61,7 @@ fun SecondScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             CustomBasicTextField(
+                textIsEmptyError = arsaAlani.isEmpty(),
                 constraints = constraints,
                 entry = arsaAlani,
                 hint = "Arsa Alanı Giriniz. (m²)",
@@ -73,6 +75,7 @@ fun SecondScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             CustomBasicTextField(
+                textIsEmptyError = insaatBirimMaliyeti.isEmpty(),
                 constraints = constraints,
                 entry = insaatBirimMaliyeti,
                 hint = "İnşaat Birim Maliyeti Giriniz. (₺/m²)",
@@ -85,6 +88,7 @@ fun SecondScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             CustomBasicTextField(
+                textIsEmptyError = brutAlanBirimSatisFiyati.isEmpty(),
                 constraints = constraints,
                 entry = brutAlanBirimSatisFiyati,
                 hint = "Brüt Alan Birim Satış Fiyatı. (₺/m²)",
@@ -97,6 +101,7 @@ fun SecondScreen(
             Spacer(modifier = Modifier.height(5.dp))
 
             CustomBasicTextField(
+                textIsEmptyError = hedefKarOrani.isEmpty(),
                 constraints = constraints,
                 entry = hedefKarOrani,
                 hint = "Hedef Kar Oranı. (%)",
@@ -158,23 +163,33 @@ fun SecondScreen(
 
             Button(
                 onClick = {
-//                    FizibiliteModel(
-//                        projeAdi= ,
-//                        projeSehir= ,
-//                        projeIlce= ,
-//                        ada= ,
-//                        parsel= ,
-//                        arsaAlani= ,
-//                        insaatBirimMaliyeti= ,
-//                        brutAlanBirimSatisFiyati= ,
-//                        hedefKarOrani= ,
-//                        bodrumKatAlani= ,
-//                        bodrumKatBirimMaliyeti= ,
-//                        bodrumKatAdedi= ,
-//                        mevcutDaireSayisi= ,
-//                    )
+                    if(
+                        arsaAlani.isNotEmpty() &&
+                        insaatBirimMaliyeti.isNotEmpty() &&
+                        brutAlanBirimSatisFiyati.isNotEmpty() &&
+                        hedefKarOrani.isNotEmpty()){
 
-                    appViewModel.onButtonClicked()
+                        val fizibiliteModel =
+                            FizibiliteModel(
+                                projeAdi = projeAdi,
+                                projeSehir = projeSehir,
+                                projeIlce = projeIlce,
+                                ada = ada,
+                                parsel = parsel,
+                                //Bunlar boş gelemez hesaplama için gerekli;
+                                arsaAlani = arsaAlani.toDouble(),
+                                insaatBirimMaliyeti = insaatBirimMaliyeti.toDouble(),
+                                brutAlanBirimSatisFiyati = brutAlanBirimSatisFiyati.toDouble(),
+                                hedefKarOrani = hedefKarOrani.toDouble(),
+                                //Bunlar null gelebilir default değer atadık;
+                                bodrumKatAlani = bodrumKatAlani.toDoubleOrNull(),
+                                bodrumKatBirimMaliyeti = bodrumKatBirimMaliyeti.toDoubleOrNull(),
+                                bodrumKatAdedi = bodrumKatAdedi.toDoubleOrNull(),
+                                mevcutDaireSayisi = mevcutDaireSayisi.toDoubleOrNull(),
+                            )
+                    }else{
+                        println("Boş olan kutucukları doldurunuz.")
+                    }
                 }
             ) {
                 Text(text = R.string.ACTION_MAIN_HESAPLA)
