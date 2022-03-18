@@ -160,7 +160,6 @@ class MyRepo @Inject constructor() {
 
                     driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500))
 
-
                     //Burada problem var nedense endeks buttonuna tıklayamadım.
                     val getEndeksSelector = driver.findElement(By.xpath("//*[@id=\"reiForm\"]/div")) //Endeks button seç
                     delay(randomRange.random().toLong())// Random bekledik
