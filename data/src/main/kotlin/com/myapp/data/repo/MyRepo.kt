@@ -68,10 +68,6 @@ class MyRepo @Inject constructor() {
                     searchBox.click()
                     searchBox.sendKeys("${fizibiliteModel.ada}/${fizibiliteModel.parsel}")
 
-
-
-
-
                     val searchButton = driver.findElement(By.xpath("//*[@id=\"btnSearchAdaParsel\"]"))
                     driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500))
                     searchButton.click()
