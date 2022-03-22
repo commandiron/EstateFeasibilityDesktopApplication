@@ -11,7 +11,7 @@ data class FizibiliteModel(
 
     //Second Screen
     var arsaAlani: Double? = null,
-    var insaatBirimMaliyeti: Double? = null,
+    var insaatBirimMaliyeti: Double? = 0.0,
     var brutAlanBirimSatisFiyati: Double? = null,
     var hedefKarOrani: Double? = 15.0,
     var bodrumKatAlani: Double? = 0.0,

@@ -15,20 +15,23 @@ import com.myapp.ui.feature.second.CustomBasicTextField
 @Composable
 fun FirstScreen(
     firstViewModel: FirstViewModel,
-    firstToSecondScreen: () -> Unit
+    firstToSecondScreen:(FizibiliteModel)  -> Unit
 ) {
 
     var projeAdi by remember { mutableStateOf("Test1") }
     var projeSehir by remember { mutableStateOf("İstanbul") } //Uygulama şu anlık şehir değiştirmeyi desteklemiyor.
     var projeIlce by remember { mutableStateOf("Kadıköy") } //Uygulama şu anlık ilçe değiştirmeyi desteklemiyor.
     var ada by remember { mutableStateOf("123") }
-    var parsel by remember { mutableStateOf("12") }
+    var parsel by remember { mutableStateOf("12")}
+
+    var fizibiliteModel by remember { mutableStateOf(FizibiliteModel())}
+    fizibiliteModel = firstViewModel.fizibiliteModelFromInternet.value
 
     val isLoading by remember {firstViewModel.isLoading}
     val dataIsLoaded by remember {firstViewModel.dataIsLoaded}
     LaunchedEffect(dataIsLoaded){
         if(dataIsLoaded){
-            firstToSecondScreen()
+            firstToSecondScreen(fizibiliteModel)
         }
     }
 

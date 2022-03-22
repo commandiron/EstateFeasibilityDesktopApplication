@@ -5,6 +5,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
@@ -23,6 +25,7 @@ fun CustomBasicTextField(
     hint: String,
     addedSymbol: String? = null,
     inputTypeIsNumber: Boolean = false,
+    onFocusChange:(Boolean) -> Unit = {},
     onChange:(String) -> Unit = {}){
 
     val windowHeight = constraints.maxHeight
@@ -41,7 +44,14 @@ fun CustomBasicTextField(
     }
 
     OutlinedTextField(
-        modifier = modifier.width((windowWidth/2).dp).defaultMinSize(minHeight = fontSize.dp),
+        modifier = modifier.width((windowWidth/2).dp).defaultMinSize(minHeight = fontSize.dp).onFocusChanged {
+            if(text.toDoubleOrNull() == 0.0){
+                text = ""
+                onChange(text)
+            }
+        }.onFocusEvent {
+            onFocusChange(it.hasFocus)
+        },
         readOnly = readOnly,
         colors = TextFieldDefaults.textFieldColors(
             focusedLabelColor = MaterialTheme.colors.onSurface,

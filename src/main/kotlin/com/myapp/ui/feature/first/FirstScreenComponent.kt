@@ -6,12 +6,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
+import com.myapp.data.model.FizibiliteModel
 import javax.inject.Inject
 
 class FirstScreenComponent(
     appComponent: AppComponent,
     private val componentContext: ComponentContext,
-    private val firstToSecondScreen: () -> Unit,
+    private val firstToSecondScreen: (FizibiliteModel) -> Unit,
 ) : Component, ComponentContext by componentContext {
 
     @Inject
@@ -28,6 +29,6 @@ class FirstScreenComponent(
             viewModel.init(scope)
         }
 
-        FirstScreen(viewModel, firstToSecondScreen)
+        FirstScreen(viewModel, {firstToSecondScreen(it)})
     }
 }

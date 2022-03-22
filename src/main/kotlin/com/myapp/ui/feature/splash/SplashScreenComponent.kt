@@ -9,7 +9,6 @@ import javax.inject.Inject
 class SplashScreenComponent(
     appComponent: AppComponent,
     private val componentContext: ComponentContext,
-    private val onSplashFinished: () -> Unit,
 ) : Component, ComponentContext by componentContext {
 
     @Inject
@@ -30,7 +29,7 @@ class SplashScreenComponent(
         val isSplashFinished by splashViewModel.isSplashFinished.collectAsState()
 
         if (isSplashFinished) {
-            onSplashFinished()
+            //onSplashFinished()
         }
 
         SplashScreen(
