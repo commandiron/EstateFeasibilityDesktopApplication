@@ -1660,7 +1660,7 @@ class RandomUserAgent{
             browser = "Chrome"
         }
         val userAgents = uaMap[browser]!!
-        return userAgents[Math.floor(Math.random() * userAgents.size).toInt()]
+            return userAgents[Math.floor(Math.random() * userAgents.size).toInt()]
     }
 
 }

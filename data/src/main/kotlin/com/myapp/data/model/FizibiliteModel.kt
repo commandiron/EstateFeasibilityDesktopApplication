@@ -3,11 +3,11 @@ package com.myapp.data.model
 data class FizibiliteModel(
 
     //First Screen
-    var projeAdi: String,
-    var projeSehir: String,
-    var projeIlce: String,
-    var ada: String,
-    var parsel: String,
+    var projeAdi: String = "",
+    var projeSehir: String = "",
+    var projeIlce: String = "",
+    var ada: String = "",
+    var parsel: String = "",
 
     //Second Screen
     var arsaAlani: Double? = null,

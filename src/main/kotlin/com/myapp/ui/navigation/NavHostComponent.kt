@@ -11,7 +11,6 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.di.DaggerAppComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
-import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreen
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
 import com.myapp.ui.feature.first.FirstScreenComponent
 
@@ -19,7 +18,7 @@ import com.myapp.ui.feature.first.FirstScreenComponent
  * All navigation decisions are made from here
  */
 class NavHostComponent(
-    private val componentContext: ComponentContext,
+    private val componentContext: ComponentContext
 ) : Component, ComponentContext by componentContext {
 
     /**
@@ -28,7 +27,7 @@ class NavHostComponent(
     private sealed class Config : Parcelable {
         object Splash : Config()
         object First : Config()
-        object Main : Config()
+        object Second : Config()
     }
 
     private val appComponent: AppComponent = DaggerAppComponent
@@ -56,12 +55,16 @@ class NavHostComponent(
             Config.First -> FirstScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext,
-                onButtonClicked = ::toSecondScreen
+                firstToSecondScreen = { firstToSecondScreen() }
             )
-            Config.Main -> SecondScreenComponent(
+            Config.Second -> SecondScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext
             )
+            else -> {SecondScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext
+            )}
         }
     }
 
@@ -80,14 +83,10 @@ class NavHostComponent(
      */
 
     private fun onSplashFinished() {
-        router.push(Config.Main)
+        router.push(Config.Second)
     }
 
-    private fun toFirstScreen() {
-        router.push(Config.First)
-    }
-
-    private fun toSecondScreen() {
-        router.push(Config.Main)
+    private fun firstToSecondScreen() {
+        router.replaceCurrent(Config.Second)
     }
 }

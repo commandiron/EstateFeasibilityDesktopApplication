@@ -26,9 +26,8 @@ dependencies {
     val coroutinesVersion = "1.6.0"
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
-
     // Dagger
-    val daggerVersion: String by rootProject.extra
+    val daggerVersion = "2.41"
     api("com.google.dagger:dagger:$daggerVersion")
     kapt("com.google.dagger:dagger-compiler:$daggerVersion")
 

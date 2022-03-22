@@ -11,8 +11,9 @@ import javax.inject.Inject
 class FirstScreenComponent(
     appComponent: AppComponent,
     private val componentContext: ComponentContext,
-    private val onButtonClicked: () -> Unit,
+    private val firstToSecondScreen: () -> Unit,
 ) : Component, ComponentContext by componentContext {
+
     @Inject
     lateinit var viewModel: FirstViewModel
 
@@ -27,6 +28,6 @@ class FirstScreenComponent(
             viewModel.init(scope)
         }
 
-        FirstScreen(viewModel, onButtonClicked)
+        FirstScreen(viewModel, firstToSecondScreen)
     }
 }

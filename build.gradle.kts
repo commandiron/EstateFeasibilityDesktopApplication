@@ -40,7 +40,6 @@ dependencies {
     implementation("com.arkivanov.decompose:decompose-jvm:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains-jvm:$decomposeVersion")
 
-
     /**
      * Testing Dependencies
      */
