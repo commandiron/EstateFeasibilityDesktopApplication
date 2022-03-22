@@ -4,8 +4,6 @@ import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
 import com.myapp.ui.feature.first.FirstScreenComponent
 import dagger.Component
-import dagger.Provides
-import org.ktorm.database.Database
 import javax.inject.Singleton
 
 @Singleton
