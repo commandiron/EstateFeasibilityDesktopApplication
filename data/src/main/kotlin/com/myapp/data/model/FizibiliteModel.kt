@@ -6,6 +6,7 @@ data class FizibiliteModel(
     var projeAdi: String = "",
     var projeSehir: String = "",
     var projeIlce: String = "",
+    var projeMahalle: String = "",
     var ada: String = "",
     var parsel: String = "",
 

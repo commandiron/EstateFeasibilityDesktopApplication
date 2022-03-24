@@ -1,12 +1,11 @@
 package com.myapp.ui.feature.first
 
+import kotlinx.coroutines.flow.collect
 import androidx.compose.runtime.mutableStateOf
 import com.arsa_fizibilite_app_by_command.util.ViewModel
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.usecase.UseCases
 import com.myapp.data.util.Response
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,9 +22,9 @@ class FirstViewModel @Inject constructor(
 
     var dataIsLoaded = mutableStateOf(false)
 
-    fun getArsaVerileriWithSelenium(fizibiliteModel: FizibiliteModel) {
+    fun getArsaAlaniVeMahalleAdiWithSelenium(fizibiliteModel: FizibiliteModel) {
         viewModelScope.launch {
-            useCases.getArsaVerileriWithSelenium.invoke(fizibiliteModel).collect{ response ->
+            useCases.getArsaAlaniVeMahalleAdiWithSelenium.invoke(fizibiliteModel).collect{ response ->
                 when(response){
                     is Response.Loading -> {
                         isLoading.value = true
@@ -36,7 +35,6 @@ class FirstViewModel @Inject constructor(
                         dataIsLoaded.value = true
                     }
                     is Response.Error -> {
-                        println("Error")
                     }
                 }
             }

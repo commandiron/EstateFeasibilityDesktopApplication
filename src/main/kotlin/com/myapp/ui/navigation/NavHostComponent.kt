@@ -1,10 +1,10 @@
 package com.arsa_fizibilite_app_by_command.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.WindowState
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfadeScale
-import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.replaceCurrent
 import com.arkivanov.decompose.router.router
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -14,12 +14,14 @@ import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.ui.feature.first.FirstScreenComponent
+import com.myapp.ui.feature.third.ThirdScreenComponent
 
 /**
  * All navigation decisions are made from here
  */
 class NavHostComponent(
-    private val componentContext: ComponentContext
+    private val componentContext: ComponentContext,
+    private val windowState: WindowState
 ) : Component, ComponentContext by componentContext {
 
     private val appComponent: AppComponent = DaggerAppComponent
@@ -52,6 +54,13 @@ class NavHostComponent(
             is Config.Second -> SecondScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext,
+                fizibiliteModel = config.fizibiliteModel,
+                secondToThirdScreen = ::secondToThirdScreen,
+                windowState = windowState
+            )
+            is Config.Third -> ThirdScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext,
                 fizibiliteModel = config.fizibiliteModel
             )
             null -> SplashScreenComponent(
@@ -65,6 +74,10 @@ class NavHostComponent(
         router.replaceCurrent(Config.Second(fizibiliteModel))
     }
 
+    private fun secondToThirdScreen(fizibiliteModel: FizibiliteModel) {
+        router.replaceCurrent(Config.Third(fizibiliteModel))
+    }
+
 
     /**
      * Available screensSelectApp
@@ -73,6 +86,7 @@ class NavHostComponent(
         object Splash : Config()
         object First : Config()
         data class Second(val fizibiliteModel: FizibiliteModel) : Config()
+        data class Third(val fizibiliteModel: FizibiliteModel) : Config()
     }
 
 

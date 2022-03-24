@@ -21,17 +21,17 @@ fun FirstScreen(
     var projeAdi by remember { mutableStateOf("Test1") }
     var projeSehir by remember { mutableStateOf("İstanbul") } //Uygulama şu anlık şehir değiştirmeyi desteklemiyor.
     var projeIlce by remember { mutableStateOf("Kadıköy") } //Uygulama şu anlık ilçe değiştirmeyi desteklemiyor.
-    var ada by remember { mutableStateOf("123") }
-    var parsel by remember { mutableStateOf("12")}
+    var ada by remember { mutableStateOf("347") }
+    var parsel by remember { mutableStateOf("1")}
 
-    var fizibiliteModel by remember { mutableStateOf(FizibiliteModel())}
-    fizibiliteModel = firstViewModel.fizibiliteModelFromInternet.value
+    var fizibiliteModelFromWebCraping by remember { mutableStateOf(FizibiliteModel())}
+    fizibiliteModelFromWebCraping = firstViewModel.fizibiliteModelFromInternet.value
 
     val isLoading by remember {firstViewModel.isLoading}
     val dataIsLoaded by remember {firstViewModel.dataIsLoaded}
     LaunchedEffect(dataIsLoaded){
         if(dataIsLoaded){
-            firstToSecondScreen(fizibiliteModel)
+            firstToSecondScreen(fizibiliteModelFromWebCraping)
         }
     }
 
@@ -104,7 +104,7 @@ fun FirstScreen(
                     parsel = it
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
                     onClick = {
@@ -115,9 +115,15 @@ fun FirstScreen(
                             ada.isNotEmpty() &&
                             parsel.isNotEmpty()){
 
-                            firstViewModel.getArsaVerileriWithSelenium(
-                                FizibiliteModel(projeAdi,projeSehir,projeIlce,ada,parsel)
+                            firstViewModel.getArsaAlaniVeMahalleAdiWithSelenium(
+                                FizibiliteModel(
+                                    projeAdi = projeAdi,
+                                    projeSehir = projeSehir,
+                                    projeIlce = projeIlce,
+                                    ada = ada,
+                                    parsel = parsel)
                             )
+
                         }else{
                             println("Boş olan kutucukları doldurunuz.")
                         }

@@ -6,208 +6,84 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.rememberWindowState
 import com.arsa_fizibilite_app_by_command.ui.value.R
+import com.arsa_fizibilite_app_by_command.ui.value.R.string.TEXT_SECOND_DAHA_ONCE_GIRIS_YAPTIM
+import com.arsa_fizibilite_app_by_command.ui.value.R.string.TEXT_SECOND_LUTFEN_LOGIN_OLUNUZ
 import com.myapp.data.model.FizibiliteModel
-import com.myapp.ui.feature.first.FirstViewModel
-import com.myapp.ui.feature.second.CustomBasicTextField
 import com.myapp.ui.feature.second.SecondViewModel
+import java.awt.Point
 
 @Composable
 fun SecondScreen(
     secondViewModel: SecondViewModel,
-    fizibiliteModelFromFirstCal: FizibiliteModel
+    fizibiliteModelFromFirstCal: FizibiliteModel,
+    secondToThirdScreen:(FizibiliteModel)  -> Unit,
+    windowState: WindowState
 ) {
+    fizibiliteModelFromFirstCal //-> Burda Arsa Alanını ve mahalleyi çektik.
+    //şimdi siteye kullanıcıyı login ettiriceğiz.
+    //Ordan brüt fiyatı çekeceğiz.
+    //Ordan üçüncü sayfaya geçeçeğiz.
 
-    var fizibiliteModel by remember { mutableStateOf(FizibiliteModel()) }
-    fizibiliteModel = fizibiliteModelFromFirstCal
+    var fizibiliteModelFromWebCraping by remember { mutableStateOf(FizibiliteModel())}
+    fizibiliteModelFromWebCraping = secondViewModel.fizibiliteModelFromInternet.value
 
-    var projeAdi by remember { mutableStateOf("") }
-    projeAdi = fizibiliteModel.projeAdi
+    val isLoading by remember {secondViewModel.isLoading }
 
-    var projeSehir by remember { mutableStateOf("") }
-    projeSehir = fizibiliteModel.projeSehir
+    val dataIsLoaded by remember {secondViewModel.dataIsLoaded}
+    LaunchedEffect(dataIsLoaded){
+        if(dataIsLoaded){
+            secondToThirdScreen(fizibiliteModelFromWebCraping)
+        }
+    }
 
-    var projeIlce by remember { mutableStateOf("") }
-    projeIlce = fizibiliteModel.projeIlce
-
-    var ada by remember { mutableStateOf("") }
-    ada = fizibiliteModel.ada
-
-    var parsel by remember { mutableStateOf("") }
-    parsel = fizibiliteModel.parsel
-
-    var arsaAlani by remember{ mutableStateOf("") }
-    arsaAlani = fizibiliteModel.arsaAlani.toString()
-
-    var insaatBirimMaliyeti by remember{ mutableStateOf("") }
-    insaatBirimMaliyeti = fizibiliteModel.insaatBirimMaliyeti.toString()
-
-    var brutAlanBirimSatisFiyati by remember{ mutableStateOf("") }
-    brutAlanBirimSatisFiyati = fizibiliteModel.brutAlanBirimSatisFiyati.toString()
-
-    var hedefKarOrani by remember{ mutableStateOf("") }
-    hedefKarOrani = fizibiliteModel.hedefKarOrani.toString()
-
-    var bodrumKatAlani by remember{ mutableStateOf("") }
-    bodrumKatAlani = fizibiliteModel.bodrumKatAlani.toString()
-
-    var bodrumKatBirimMaliyeti by remember{ mutableStateOf("") }
-    bodrumKatBirimMaliyeti = fizibiliteModel.bodrumKatBirimMaliyeti.toString()
-
-    var bodrumKatAdedi by remember{ mutableStateOf("") }
-    bodrumKatAdedi = fizibiliteModel.bodrumKatAdedi.toString()
-
-    var mevcutDaireSayisi by remember{ mutableStateOf("") }
-    mevcutDaireSayisi = fizibiliteModel.mevcutDaireSayisi.toString()
-
+    LaunchedEffect(Unit){
+        secondViewModel.loginWebScrapingSite(windowState.position, windowState.size)
+    }
 
     BoxWithConstraints (
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter
     ) {
 
-        val constraints = this.constraints
+        if(isLoading){
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }else{
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(5.dp))
+                CircularProgressIndicator()
 
-            CustomBasicTextField(
-                textIsEmptyError = arsaAlani.isEmpty(),
-                constraints = constraints,
-                entry = arsaAlani,
-                hint = "Arsa Alanı Giriniz. (m²)",
-                addedSymbol = "m²",
-                inputTypeIsNumber = true)
-                {
-                arsaAlani = it
-            }
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(5.dp))
+                Text(TEXT_SECOND_LUTFEN_LOGIN_OLUNUZ)
 
-            CustomBasicTextField(
-                textIsEmptyError = insaatBirimMaliyeti.isEmpty(),
-                constraints = constraints,
-                entry = insaatBirimMaliyeti,
-                hint = "İnşaat Birim Maliyeti Giriniz. (₺/m²)",
-                addedSymbol = "₺/m²",
-                inputTypeIsNumber = true)
-            {
-                insaatBirimMaliyeti = it
-            }
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(5.dp))
+                Text(TEXT_SECOND_DAHA_ONCE_GIRIS_YAPTIM)
 
-            CustomBasicTextField(
-                textIsEmptyError = brutAlanBirimSatisFiyati.isEmpty(),
-                constraints = constraints,
-                entry = brutAlanBirimSatisFiyati,
-                hint = "Brüt Alan Birim Satış Fiyatı. (₺/m²)",
-                addedSymbol = "₺/m²",
-                inputTypeIsNumber = true)
-            {
-                brutAlanBirimSatisFiyati = it
-            }
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                textIsEmptyError = hedefKarOrani.isEmpty(),
-                constraints = constraints,
-                entry = hedefKarOrani,
-                hint = "Hedef Kar Oranı. (%)",
-                addedSymbol = "%",
-                inputTypeIsNumber = true)
-            {
-                hedefKarOrani = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatAlani,
-                hint = "Bodrum Kat Alanı Giriniz. (m²) - opsiyonel",
-                addedSymbol = "m²",
-                inputTypeIsNumber = true)
-            {
-                bodrumKatAlani = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatBirimMaliyeti,
-                hint = "Bodrum Kat Birim Maliyeti Giriniz. (₺/m²) - opsiyonel",
-                addedSymbol = "₺/m²",
-                inputTypeIsNumber = true)
-            {
-                bodrumKatBirimMaliyeti = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatAdedi,
-                hint = "Bodrum Kat Adedini Giriniz. (ad) - opsiyonel",
-                addedSymbol = "ad",
-                inputTypeIsNumber = true)
-            {
-                bodrumKatAdedi = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = mevcutDaireSayisi,
-                hint = "Mevcut Daire Sayısı. (ad) - opsiyonel",
-                addedSymbol = "ad",
-                inputTypeIsNumber = true)
-            {
-                mevcutDaireSayisi = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Button(
-                onClick = {
-                    if(
-                        arsaAlani.isNotEmpty() &&
-                        insaatBirimMaliyeti.isNotEmpty() &&
-                        brutAlanBirimSatisFiyati.isNotEmpty() &&
-                        hedefKarOrani.isNotEmpty()){
-
-                        val fizibiliteModel =
-                            FizibiliteModel(
-                                projeAdi = projeAdi,
-                                projeSehir = projeSehir,
-                                projeIlce = projeIlce,
-                                ada = ada,
-                                parsel = parsel,
-                                //Bunlar boş gelemez hesaplama için gerekli;
-                                arsaAlani = arsaAlani.toDouble(),
-                                insaatBirimMaliyeti = insaatBirimMaliyeti.toDouble(),
-                                brutAlanBirimSatisFiyati = brutAlanBirimSatisFiyati.toDouble(),
-                                hedefKarOrani = hedefKarOrani.toDouble(),
-                                //Bunlar null gelebilir default değer atadık;
-                                bodrumKatAlani = bodrumKatAlani.toDoubleOrNull(),
-                                bodrumKatBirimMaliyeti = bodrumKatBirimMaliyeti.toDoubleOrNull(),
-                                bodrumKatAdedi = bodrumKatAdedi.toDoubleOrNull(),
-                                mevcutDaireSayisi = mevcutDaireSayisi.toDoubleOrNull(),
-                            )
-                        println("fizibilite için: " + fizibiliteModel)
-                    }else{
-                        println("Boş olan kutucukları doldurunuz.")
+                Button(
+                    onClick = {
+                        secondViewModel.getBirimSatisFiyatiWithSelenium(fizibiliteModelFromFirstCal)
                     }
+                ) {
+                    Text(text = R.string.ACTION_SECOND_SONRAKI_ADIM)
                 }
-            ) {
-                Text(text = R.string.ACTION_MAIN_HESAPLA)
+
+                Spacer(modifier = Modifier.height(150.dp))
+
+                Button(
+                    onClick = {
+                        secondViewModel.loginWebScrapingSite(windowState.position, windowState.size)
+                    }
+                ) {
+                    Text(text = R.string.ACTION_SECOND_YAPAMADIM)
+                }
             }
         }
     }
