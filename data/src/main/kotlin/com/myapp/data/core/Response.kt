@@ -1,4 +1,4 @@
-package com.myapp.data.util
+package com.myapp.data.core
 
 sealed class Response<out T> {
     object Loading: Response<Nothing>()

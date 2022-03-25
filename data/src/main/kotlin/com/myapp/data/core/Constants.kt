@@ -1,4 +1,4 @@
-package com.myapp.data.util
+package com.myapp.data.core
 
 object Constants {
     const val IMAR_URL = "https://webgis.kadikoy.bel.tr/imardurumu/#"

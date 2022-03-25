@@ -1,5 +1,6 @@
 package com.arsa_fizibilite_app_by_command.ui.value
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -10,28 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.jetbrains.skia.Surface
 
 // Color set
 val LightTheme = lightColors() // TODO :
 val DarkTheme = darkColors(
 
-    primary = Color(0xFF6E7987),
+    primary = Color.White,
+    primaryVariant = Color.Red,
+    secondary = Color.Green,
 
+    background = Color(0xFF255560),
 
-    primaryVariant = Color(0xFF3700B3),
-    secondary = Color(0xFF03DAC6),
-    secondaryVariant = Color.White,
-
-    background = Color(0xFF1d4170),//
-
-    error = Color(0xFFCF6679),
-    surface = Color.Red,
-    onPrimary= Color.Black,
-    onSecondary= Color.Black,
-    onBackground = Color.White,
-    onSurface= Color.White,
-    onError= Color.Black
+    surface = Color(0xFFE1E8EB),
 )
 
 @Composable
@@ -44,9 +38,11 @@ fun arsa_fizibilite_app_by_commandTheme(
         typography = arsa_fizibilite_app_by_commandTypography
     ) {
         Scaffold(
+            backgroundColor = MaterialTheme.colors.background,
             topBar = {
                 TopAppBar(
-                    backgroundColor = MaterialTheme.colors.primary
+                    modifier = Modifier.border(2.dp,Color.Gray),
+                    backgroundColor = MaterialTheme.colors.surface,
                 ) {
 
                     Box(
@@ -55,8 +51,9 @@ fun arsa_fizibilite_app_by_commandTheme(
                     ) {
                         Text(
                             textAlign = TextAlign.Center,
-                            text = "KAT KARŞILIĞI İNŞAAT FİZİBİLİTE UYGULAMASI",
-                            style = MaterialTheme.typography.h5
+                            fontSize = 20.sp,
+                            text = "FİZİBİLİTE UYGULAMASI",
+                            color = Color.Black
                         )
                     }
                 }

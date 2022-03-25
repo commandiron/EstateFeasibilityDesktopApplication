@@ -13,10 +13,11 @@ object R {
     @Suppress("ClassName")
     object string {
         const val ACTION_FIRST_SONRAKI_ADIM = "Sonraki Adıma Geç!"
+        const val TEXT_FIRST_HATA = "Hata gerçekleşti tekrar deneyin!"
 
-        const val TEXT_SECOND_LUTFEN_LOGIN_OLUNUZ = "Lütfen açılan siteye login olunuz ve girdikten sonra tarayıcıyı kapatınız."
-        const val TEXT_SECOND_DAHA_ONCE_GIRIS_YAPTIM = "Eğer zaten daha önce giriş yapmışsanız, sadece tarayıcıyı kapatınız."
-        const val ACTION_SECOND_SONRAKI_ADIM = "Tarayıcıyı Kapattım, Sonraki Adıma Geç!"
+        const val TEXT_SECOND_LUTFEN_LOGIN_OLUNUZ = "Lütfen açılan siteye giriş yapınız, daha önce giriş yaptıysanız devam ediniz."
+        const val TEXT_SECOND_LOGIN_OLAMADINIZ = "Giriş yapamadınız, lütfen tekrar deneyin."
+        const val ACTION_SECOND_ILERI = "Giriş Yaptım. İleri"
         const val ACTION_SECOND_YAPAMADIM = "Giriş yapamadım! Tekrar Denemek İstiyorum!"
 
         const val ACTION_THIRD_HESAPLA = "Hesapla!"

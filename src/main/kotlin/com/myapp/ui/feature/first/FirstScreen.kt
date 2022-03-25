@@ -1,15 +1,16 @@
 package com.myapp.ui.feature.first
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arsa_fizibilite_app_by_command.ui.value.R
 import com.myapp.data.model.FizibiliteModel
+import com.myapp.ui.feature.components.CustomLinearProgressIndicator
 import com.myapp.ui.feature.second.CustomBasicTextField
 
 @Composable
@@ -35,13 +36,23 @@ fun FirstScreen(
         }
     }
 
+    val isErrorHappen by remember {firstViewModel.isErrorHappen }
+
+    val duration by remember{firstViewModel.progressIndicatorDuration}
+
     BoxWithConstraints (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().focusable(enabled = true),
         contentAlignment = Alignment.Center
     ) {
 
         if(isLoading){
-            CircularProgressIndicator()
+            Column(horizontalAlignment = Alignment.CenterHorizontally){
+                CircularProgressIndicator()
+                Spacer(modifier = Modifier.height(20.dp))
+                Text("Veriler çekiliyor. Lütfen bekleyiniz.")
+                Spacer(modifier = Modifier.height(20.dp))
+                CustomLinearProgressIndicator(duration)
+            }
         }else{
             val constraints = this.constraints
 
@@ -50,7 +61,7 @@ fun FirstScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 CustomBasicTextField(
                     textIsEmptyError = projeAdi.isEmpty(),
@@ -130,6 +141,11 @@ fun FirstScreen(
                     }
                 ) {
                     Text(text = R.string.ACTION_FIRST_SONRAKI_ADIM)
+                }
+
+                if(isErrorHappen){
+                    Spacer(modifier = Modifier.height(40.dp))
+                    Text(text = R.string.TEXT_FIRST_HATA, color = Color.Red)
                 }
             }
         }

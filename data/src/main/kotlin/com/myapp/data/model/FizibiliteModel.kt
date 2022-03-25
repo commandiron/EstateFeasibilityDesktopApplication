@@ -14,11 +14,11 @@ data class FizibiliteModel(
     var arsaAlani: Double? = null,
     var insaatBirimMaliyeti: Double? = 0.0,
     var brutAlanBirimSatisFiyati: Double? = null,
-    var hedefKarOrani: Double? = 15.0,
+    var hedefKarOrani: Double? = 0.15,
     var bodrumKatAlani: Double? = 0.0,
     var bodrumKatBirimMaliyeti: Double? = 0.0,
-    var bodrumKatAdedi: Double? = 0.0,
-    var mevcutDaireSayisi: Double? = 0.0,
+    var bodrumKatAdedi: Int? = 0,
+    var mevcutDaireSayisi: Int? = 0,
 
 ) {
 }

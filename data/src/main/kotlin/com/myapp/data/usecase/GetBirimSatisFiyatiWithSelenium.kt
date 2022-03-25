@@ -7,5 +7,6 @@ import javax.inject.Inject
 class GetBirimSatisFiyatiWithSelenium @Inject constructor(
     private val myRepo: MyRepo
 ) {
-    suspend operator fun invoke(fizibiliteModel: FizibiliteModel) = myRepo.getBirimSatisFiyatiWithSelenium(fizibiliteModel)
+    suspend operator fun invoke(fizibiliteModel: FizibiliteModel)
+    = myRepo.getBirimSatisFiyatiWithSelenium(fizibiliteModel)
 }

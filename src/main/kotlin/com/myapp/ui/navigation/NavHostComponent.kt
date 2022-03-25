@@ -32,6 +32,16 @@ class NavHostComponent(
      */
     private val router = router<Config, Component>(
         initialConfiguration = Config.First,
+//            FizibiliteModel(
+//                projeAdi = "Test1",
+//                projeSehir = "İstanbul",
+//                projeIlce = "Kadıköy",
+//                projeMahalle = "Sahrayıcedit",
+//                ada = "371",
+//                parsel = "12",
+//                arsaAlani = 1200.0,
+//                brutAlanBirimSatisFiyati = 30000.0
+//                )), //FOR TEST
         handleBackButton = true,
         childFactory = ::createScreenComponent
     )

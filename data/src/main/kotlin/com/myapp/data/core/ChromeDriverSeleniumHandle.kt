@@ -9,10 +9,13 @@ import org.openqa.selenium.By
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.Point
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.devtools.idealized.Network
+import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.Select
+import org.openqa.selenium.support.ui.WebDriverWait
 import java.time.Duration
 import java.util.*
 
@@ -24,6 +27,8 @@ object ChromeDriverSeleniumHandle {
         isHeadless: Boolean = false,
         windowPosition: Point = Point(0,0),
         dimension: Dimension = Dimension(800,520)):WebDriver{
+
+        quitDriver()
 
         //Webdriver
         System.setProperty(
@@ -118,5 +123,9 @@ object ChromeDriverSeleniumHandle {
             delay(randomRangeForSelect.random().toLong())
             select.selectByVisibleText(visibleText)
         }
+    }
+
+    fun waitUntil(elementXpath: String, timeOutInSeconds: Long){
+        WebDriverWait(driver,timeOutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)))
     }
 }

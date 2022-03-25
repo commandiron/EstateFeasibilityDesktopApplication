@@ -1,14 +1,19 @@
 package com.myapp.ui.feature.third
 
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.arsa_fizibilite_app_by_command.ui.value.R
 import com.myapp.data.model.FizibiliteModel
+import com.myapp.ui.feature.components.HoverTextState
 import com.myapp.ui.feature.second.CustomBasicTextField
 
 @Composable
@@ -29,6 +34,9 @@ fun ThirdScreen(
     var projeIlce by remember { mutableStateOf("") }
     projeIlce = fizibiliteModel.projeIlce
 
+    var projeMahalle by remember { mutableStateOf("") }
+    projeMahalle = fizibiliteModel.projeMahalle
+
     var ada by remember { mutableStateOf("") }
     ada = fizibiliteModel.ada
 
@@ -45,7 +53,7 @@ fun ThirdScreen(
     brutAlanBirimSatisFiyati = fizibiliteModel.brutAlanBirimSatisFiyati.toString()
 
     var hedefKarOrani by remember { mutableStateOf("") }
-    hedefKarOrani = fizibiliteModel.hedefKarOrani.toString()
+    hedefKarOrani = (fizibiliteModel.hedefKarOrani!!.times(100)).toString()
 
     var bodrumKatAlani by remember { mutableStateOf("") }
     bodrumKatAlani = fizibiliteModel.bodrumKatAlani.toString()
@@ -59,6 +67,8 @@ fun ThirdScreen(
     var mevcutDaireSayisi by remember { mutableStateOf("") }
     mevcutDaireSayisi = fizibiliteModel.mevcutDaireSayisi.toString()
 
+    var hoverTextStateFirst: HoverTextState by remember{ mutableStateOf(HoverTextState()) }
+    var hoverTextStateSecond: HoverTextState by remember{ mutableStateOf(HoverTextState()) }
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
@@ -67,12 +77,63 @@ fun ThirdScreen(
 
         val constraints = this.constraints
 
+        //BURADA BİR SIKINTI VAR BİR TÜRLÜÜ İSTEDEĞİM YERE DENK GETİREMİYORUM.
+
+        if(hoverTextStateFirst.isCurserOverInfo){
+            Card(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(
+                        start = Dp(hoverTextStateFirst.positionX + 20),
+                        top = Dp(hoverTextStateFirst.positionY/2 + 20))) {
+                Text("Bu değer internetten çekilmiştir.", modifier = Modifier.padding(4.dp), color = Color.Black)
+            }
+        }
+        if(hoverTextStateSecond.isCurserOverInfo){
+            Card(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(
+                        start = Dp(hoverTextStateSecond.positionX),
+                        top = Dp(hoverTextStateSecond.positionY/2 ))) {
+                Text("Bu değer internetten çekilmiştir.", modifier = Modifier.padding(4.dp), color = Color.Black)
+            }
+        }
+
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Card(
+                    elevation = 5.dp,
+                    contentColor = Color.Black) {
+                    Text("Proje Adı: $projeAdi ",modifier = Modifier.padding(4.dp))
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Card(
+                    modifier = Modifier.padding(4.dp),
+                    elevation = 5.dp,
+                    contentColor = Color.Black) {
+                    Column(modifier = Modifier.padding(4.dp)) {
+                        Row{
+                            Text("Sehir: $projeSehir - ")
+                            Text("İlce: $projeIlce - ")
+                            Text("Mahalle: $projeMahalle")
+                        }
+                        Row {
+                            Text("Ada: $ada ")
+                            Text("Parsel: $parsel")
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
 
             CustomBasicTextField(
                 textIsEmptyError = arsaAlani.isEmpty(),
@@ -80,7 +141,11 @@ fun ThirdScreen(
                 entry = arsaAlani,
                 hint = "Arsa Alanı Giriniz. (m²)",
                 addedSymbol = "m²",
-                inputTypeIsNumber = true
+                inputTypeIsNumber = true,
+                showTrailingIcon = true,
+                onHoverTrailingIcon = {
+                    hoverTextStateFirst = it.copy()
+                }
             )
             {
                 arsaAlani = it
@@ -108,7 +173,11 @@ fun ThirdScreen(
                 entry = brutAlanBirimSatisFiyati,
                 hint = "Brüt Alan Birim Satış Fiyatı. (₺/m²)",
                 addedSymbol = "₺/m²",
-                inputTypeIsNumber = true
+                inputTypeIsNumber = true,
+                showTrailingIcon = true,
+                onHoverTrailingIcon = {
+                    hoverTextStateSecond = it.copy()
+                }
             )
             {
                 brutAlanBirimSatisFiyati = it
@@ -130,42 +199,43 @@ fun ThirdScreen(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatAlani,
-                hint = "Bodrum Kat Alanı Giriniz. (m²) - opsiyonel",
-                addedSymbol = "m²",
-                inputTypeIsNumber = true
-            )
-            {
-                bodrumKatAlani = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatBirimMaliyeti,
-                hint = "Bodrum Kat Birim Maliyeti Giriniz. (₺/m²) - opsiyonel",
-                addedSymbol = "₺/m²",
-                inputTypeIsNumber = true
-            )
-            {
-                bodrumKatBirimMaliyeti = it
-            }
-
-            Spacer(modifier = Modifier.height(5.dp))
-
-            CustomBasicTextField(
-                constraints = constraints,
-                entry = bodrumKatAdedi,
-                hint = "Bodrum Kat Adedini Giriniz. (ad) - opsiyonel",
-                addedSymbol = "ad",
-                inputTypeIsNumber = true
-            )
-            {
-                bodrumKatAdedi = it
-            }
+            //Bu kısmı daha sonra özellik olarak ekleyebilirim, o yüzden yorum haline getiriyorum.
+//            CustomBasicTextField(
+//                constraints = constraints,
+//                entry = bodrumKatAlani,
+//                hint = "Bodrum Kat Alanı Giriniz. (m²) - opsiyonel",
+//                addedSymbol = "m²",
+//                inputTypeIsNumber = true
+//            )
+//            {
+//                bodrumKatAlani = it
+//            }
+//
+//            Spacer(modifier = Modifier.height(5.dp))
+//
+//            CustomBasicTextField(
+//                constraints = constraints,
+//                entry = bodrumKatBirimMaliyeti,
+//                hint = "Bodrum Kat Birim Maliyeti Giriniz. (₺/m²) - opsiyonel",
+//                addedSymbol = "₺/m²",
+//                inputTypeIsNumber = true
+//            )
+//            {
+//                bodrumKatBirimMaliyeti = it
+//            }
+//
+//            Spacer(modifier = Modifier.height(5.dp))
+//
+//            CustomBasicTextField(
+//                constraints = constraints,
+//                entry = bodrumKatAdedi,
+//                hint = "Bodrum Kat Adedini Giriniz. (ad) - opsiyonel",
+//                addedSymbol = "ad",
+//                inputTypeIsNumber = true
+//            )
+//            {
+//                bodrumKatAdedi = it
+//            }
 
             Spacer(modifier = Modifier.height(5.dp))
 
@@ -180,7 +250,7 @@ fun ThirdScreen(
                 mevcutDaireSayisi = it
             }
 
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = {
@@ -206,8 +276,8 @@ fun ThirdScreen(
                                 //Bunlar null gelebilir default değer atadık;
                                 bodrumKatAlani = bodrumKatAlani.toDoubleOrNull(),
                                 bodrumKatBirimMaliyeti = bodrumKatBirimMaliyeti.toDoubleOrNull(),
-                                bodrumKatAdedi = bodrumKatAdedi.toDoubleOrNull(),
-                                mevcutDaireSayisi = mevcutDaireSayisi.toDoubleOrNull(),
+                                bodrumKatAdedi = bodrumKatAdedi.toIntOrNull(),
+                                mevcutDaireSayisi = mevcutDaireSayisi.toIntOrNull(),
                             )
                     } else {
                         println("Boş olan kutucukları doldurunuz.")

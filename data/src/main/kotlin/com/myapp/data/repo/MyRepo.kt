@@ -1,19 +1,20 @@
 package com.myapp.data.repo
 
 import com.myapp.data.core.ChromeDriverSeleniumHandle
+import com.myapp.data.core.eliminateTurkishCharacters
 import com.myapp.data.model.FizibiliteModel
-import com.myapp.data.util.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_1
-import com.myapp.data.util.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_2
-import com.myapp.data.util.Constants.IMAR_URL
-import com.myapp.data.util.Response
+import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_1
+import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_2
+import com.myapp.data.core.Constants.IMAR_URL
+import com.myapp.data.core.Response
 import com.myapp.data.util.getAmount
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import org.apache.commons.lang3.StringUtils
 import org.openqa.selenium.By
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.Point
 import org.openqa.selenium.support.ui.Select
 import javax.inject.Inject
@@ -41,14 +42,13 @@ class MyRepo @Inject constructor() {
 
     suspend fun getArsaAlaniVeMahalleAdiWithSelenium(fizibiliteModel: FizibiliteModel): Flow<Response<FizibiliteModel>> = callbackFlow {
 
+        this@callbackFlow.trySendBlocking(Response.Loading)
 
-        try {
-            this@callbackFlow.trySendBlocking(Response.Loading)
+        val fizibiliteModelOutPut = fizibiliteModel
 
-            val fizibiliteModelOutPut = fizibiliteModel
+        launch(Dispatchers.IO) {
 
-            val job = launch(Dispatchers.IO) {
-
+            try {
                 val driver = ChromeDriverSeleniumHandle.setSelenium(isHeadless = true)
 
                 //Variables
@@ -67,22 +67,19 @@ class MyRepo @Inject constructor() {
                 //result
 
                 val mahalleSelector = driver.findElement(By.xpath("//*[@id=\"htmlOutput\"]/div[11]/div[1]/div/div/div/div[2]"))
-                mahalle = mahalleSelector.text.toString().lowercase().filter { !it.isWhitespace() }
+                mahalle = mahalleSelector.text.toString().eliminateTurkishCharacters().lowercase().filter { !it.isWhitespace() }
                 //result
 
                 //Result
                 fizibiliteModelOutPut.projeMahalle = mahalle
                 fizibiliteModelOutPut.arsaAlani = arsaAlani
 
-                driver.quit()
-            }
-
-            job.invokeOnCompletion {
                 this@callbackFlow.trySendBlocking(Response.Success(fizibiliteModelOutPut))
-            }
 
-        }catch (e: Exception){
-            this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+                driver.quit()
+            }catch (e:Exception){
+                this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+            }
         }
 
         awaitClose {
@@ -93,25 +90,21 @@ class MyRepo @Inject constructor() {
 
     suspend fun loginWebScrapingSite(windowPositionX: Float, windowPositionY: Float): Flow<Response<Boolean>> = callbackFlow{
 
-        try {
+        this@callbackFlow.trySendBlocking(Response.Loading)
 
-            this@callbackFlow.trySendBlocking(Response.Loading)
+        launch(Dispatchers.IO) {
 
-            val job = launch(Dispatchers.IO) {
-
+            try {
                 delay(1000.toLong())
 
                 val driver = ChromeDriverSeleniumHandle.setSelenium(windowPosition = Point(windowPositionX.toInt(),windowPositionY.toInt()))
                 driver.get(BIRIM_SATIS_FIYATI_ENDEKS_URL_1)
 
-                //Lütfen giriş yapınız ve yaptıktan sonra browser'ı Kapatınız.
-            }
-
-            job.invokeOnCompletion {
                 this@callbackFlow.trySendBlocking(Response.Success(true))
+
+            }catch (e:Exception){
+                this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
             }
-        }catch (e:Exception){
-            this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
         }
 
         awaitClose {
@@ -122,16 +115,19 @@ class MyRepo @Inject constructor() {
 
     suspend fun getBirimSatisFiyatiWithSelenium(fizibiliteModel: FizibiliteModel): Flow<Response<FizibiliteModel>> = callbackFlow{
 
-        try {
-            this@callbackFlow.trySendBlocking(Response.Loading)
-            val fizibiliteModelOutPut = fizibiliteModel
-            var mahalle = fizibiliteModel.projeMahalle
 
-            val job = launch(Dispatchers.IO) {
+        this@callbackFlow.trySendBlocking(Response.Loading)
+        val fizibiliteModelOutPut = fizibiliteModel
+        var mahalle = fizibiliteModel.projeMahalle
 
-                val driver = ChromeDriverSeleniumHandle.setSelenium(windowPosition = Point(0,0))
+        launch(Dispatchers.IO) {
+
+            try {
+                val driver = ChromeDriverSeleniumHandle.setSelenium(windowPosition = Point(-2000,0))
 
                 driver.get(BIRIM_SATIS_FIYATI_ENDEKS_URL_2)
+
+                ChromeDriverSeleniumHandle.waitUntil("/html/body/div[3]/div/ul/li[4]/a",5)
 
                 ChromeDriverSeleniumHandle.sendHumanLikeSelectAndClick(
                     "//*[@id=\"ddlReiCity\"]",
@@ -146,20 +142,11 @@ class MyRepo @Inject constructor() {
                 //İlk sayfadan çektiğimiz mahalleyi, buradaki formda seçmeye çalışıyoruz, eşleştirmemiz lazım.
                 //Büyük harf, küçük harf, boşluk vs ayıklayarak. İlk 6 harfine bakmamız yeterli.
 
-
-                println("mahalle: " + mahalle)
-
-
                 val mahalleSelectorInEndeks =
                     Select(driver.findElement(By.xpath("//*[@id=\"ddlReiQuarter\"]"))) //Mahalle Dropdown seçtik.
                 mahalleSelectorInEndeks.options.forEach {
 
-
-                    //TÜRKÇE KARAKTER BURDA PROBLEM OLDU
-
-
-                    val lowercaseSelectedOptions = it.text.lowercase().filter { !it.isWhitespace() }.filter { !it.equals("?") }
-                    println("filteredList: " + lowercaseSelectedOptions)
+                    val lowercaseSelectedOptions = it.text.eliminateTurkishCharacters().lowercase().filter { !it.isWhitespace() }
                     if (mahalle[0] == lowercaseSelectedOptions[0]) {
                         if (mahalle[1] == lowercaseSelectedOptions[1]) {
                             if (mahalle[2] == lowercaseSelectedOptions[2]) {
@@ -185,15 +172,17 @@ class MyRepo @Inject constructor() {
 
                 //Result
                 fizibiliteModelOutPut.brutAlanBirimSatisFiyati = brutAlanBirimSatisFiyati
+                fizibiliteModelOutPut.projeMahalle = StringUtils.capitalize(mahalle).toString()
+
+                this@callbackFlow.trySendBlocking(Response.Success(fizibiliteModelOutPut))
 
                 driver.quit()
+            }catch (e: Exception){
+                ChromeDriverSeleniumHandle.quitDriver()
+                this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
             }
-            job.invokeOnCompletion {
-                this@callbackFlow.trySendBlocking(Response.Success(fizibiliteModelOutPut))
-            }
-        }catch (e:Exception){
-            this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
         }
+
         awaitClose {
             channel.close()
             cancel()
