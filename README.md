@@ -30,7 +30,7 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
         * [Compose](https://developer.android.com/jetpack/compose)
 * Architecture 🏗️
     * Model-View-ViewModel - [with theapache64 compose desktop template](https://github.com/theapache64/compose-desktop-template)
-    * [Android Architecture components](https://developer.android.com/topic/libraries/architecture) ([ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel),
+    * [Android Architecture components](https://developer.android.com/topic/libraries/architecture) ([ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel))
  
  * Todo ✔️
    * Main Calculation ❌
