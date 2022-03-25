@@ -15,15 +15,6 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
 |<img src="https://user-images.githubusercontent.com/50905347/160125292-79d1c5e5-96ec-4d6b-b3cd-312a4ccad946.png" width="125" height="250">|
 
 * Application - Features ☕
-   * User Status (ONLINE - OFFLINE)
-   * Message Status (RECEIVED - READ) - PENDING: After push notification.
-   * Friend Status (PENDING, ACCEPTED, CANCELED, BLOCKED)
-   * New Message Alert
-   * Navigation Animation Between Sceens
-   * LazyColumn Last Message Snap
-   * UserList Swipe Reflesh
-   * Push Notification
-   * Dark Theme
    * Language - Turkish
 
 * Tech-stack ⚛️
