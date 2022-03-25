@@ -6,13 +6,13 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
 
 |View|
 |----------------------|
-|<img src="https://user-images.githubusercontent.com/50905347/160124239-7445df38-9ad4-46dc-a589-ab50248f50b9.gif" width="550" height="550">|
+|<img src="https://user-images.githubusercontent.com/50905347/160124239-7445df38-9ad4-46dc-a589-ab50248f50b9.gif" width="500" height="500">|
 
 * Structure 🌲
 
 |App Package Structure|
 |---------------------|
-|<img src="https://user-images.githubusercontent.com/50905347/160125292-79d1c5e5-96ec-4d6b-b3cd-312a4ccad946.png" width="250" height="125">|
+|<img src="https://user-images.githubusercontent.com/50905347/160125292-79d1c5e5-96ec-4d6b-b3cd-312a4ccad946.png" width="125" height="250">|
 
 * Application - Features ☕
    * User Status (ONLINE - OFFLINE)
