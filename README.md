@@ -1,6 +1,6 @@
 # EstateFeasibilityDesktopApplication
 
-<img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" width="50" height="10">>
+<img src="https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" width="50" height="10">
 
 Estate feasibility application written in Kotlin using Compose Desktop UI framework with Selenium auto browser library for web scraping.
  
