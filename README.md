@@ -18,7 +18,7 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
    * Language - Turkish
 
 * Tech-stack ⚛️
-    * [Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/)
+    * [Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) - develop desktop applications with compose
     * [Decompose](https://arkivanov.github.io/Decompose/)
     * [Kotlin](https://kotlinlang.org/) + [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - perform background operation
     * [Kodein DB](https://docs.kodein.org/kodein-db/0.8/index.html) - database.
