@@ -1,6 +1,6 @@
 # EstateFeasibilityDesktopApplication
 
-Estate feasibility application written in Kotlin using Compose Desktop UI framework, running On Windows.
+Estate feasibility application written in Kotlin using Compose Desktop UI framework with Selenium auto browser library for web scraping. Running On Windows.
 
 * Video 🧪
 
