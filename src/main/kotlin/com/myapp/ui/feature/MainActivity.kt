@@ -13,7 +13,6 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.lifecycle.LifecycleC
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arsa_fizibilite_app_by_command.App
 import com.arsa_fizibilite_app_by_command.ui.navigation.NavHostComponent
-import com.arsa_fizibilite_app_by_command.ui.value.arsa_fizibilite_app_by_commandTheme
 import com.myapp.data.core.ChromeDriverSeleniumHandle
 import com.theapache64.cyclone.core.Activity
 import com.theapache64.cyclone.core.Intent
@@ -31,6 +30,7 @@ class MainActivity : Activity() {
             }
         }
     }
+
 
     override fun onCreate() {
         super.onCreate()
@@ -52,9 +52,7 @@ class MainActivity : Activity() {
                 icon = painterResource("drawables/launcher_icons/system.png"),
                 state = windowState,
             ) {
-                arsa_fizibilite_app_by_commandTheme {
                     NavHostComponent(DefaultComponentContext(lifecycle),windowState).render()
-                }
             }
         }
     }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.router
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
 import com.myapp.data.model.FizibiliteModel

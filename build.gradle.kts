@@ -20,44 +20,24 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
-val daggerVersion by extra("2.41")
-
 dependencies {
     implementation(compose.desktop.currentOs)
 
     // Module dependencies
     implementation(project(":data"))
 
-    // Dagger : A fast dependency injector for Android and Java.
-    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
-    kaptTest("com.google.dagger:dagger-compiler:$daggerVersion")
-
     // Cyclone : https://github.com/theapache64/cyclone
     implementation("com.theapache64:cyclone:1.0.0-alpha01")
 
     // Decompose : Decompose
-    val decomposeVersion = "0.5.1"
+    val decomposeVersion = "0.5.2"
     implementation("com.arkivanov.decompose:decompose-jvm:$decomposeVersion")
     implementation("com.arkivanov.decompose:extensions-compose-jetbrains-jvm:$decomposeVersion")
 
-    /**
-     * Testing Dependencies
-     */
-    testImplementation("org.mockito:mockito-inline:4.3.1")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
-
-    // DaggerMock
-    testImplementation("com.github.fabioCollini.daggermock:daggermock:0.8.5")
-    testImplementation("com.github.fabioCollini.daggermock:daggermock-kotlin:0.8.5")
-
-    // Mockito Core : Mockito mock objects library core API and implementation
-    testImplementation("org.mockito:mockito-core:4.3.1")
-
-    // Expekt : An assertion library for Kotlin
-    testImplementation("com.github.theapache64:expekt:1.0.0")
-
-    // JUnit : JUnit is a unit testing framework for Java, created by Erich Gamma and Kent Beck.
-    testImplementation(kotlin("test-junit5"))
+    // Dagger
+    val daggerVersion = "2.41"
+    implementation ("com.google.dagger:dagger:$daggerVersion")
+    kapt ("com.google.dagger:dagger-compiler:$daggerVersion")
 }
 
 tasks.withType<KotlinCompile>() {

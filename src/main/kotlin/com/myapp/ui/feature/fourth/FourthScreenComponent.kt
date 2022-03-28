@@ -1,22 +1,24 @@
-package com.myapp.ui.feature.third
+package com.myapp.ui.feature.fourth
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import com.arkivanov.decompose.ComponentContext
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
-import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.model.CalculationResult
+import com.myapp.data.model.FizibiliteModel
 import javax.inject.Inject
 
-class ThirdScreenComponent(
+class FourthScreenComponent(
     appComponent: AppComponent,
     private val componentContext: ComponentContext,
-    private val fizibiliteModel: FizibiliteModel,
-    private val thirdToFourthScreen: (CalculationResult, FizibiliteModel) -> Unit,
+    private val calculationResult: CalculationResult,
+    private val fizibiliteModel: FizibiliteModel
 ) : Component, ComponentContext by componentContext {
 
     @Inject
-    lateinit var viewModel: ThirdViewModel
+    lateinit var viewModel: FourthViewModel
 
     init {
         appComponent.inject(this)
@@ -29,8 +31,6 @@ class ThirdScreenComponent(
             viewModel.init(scope)
         }
 
-        ThirdScreen(viewModel, fizibiliteModel) { calculationResult: CalculationResult, fizibiliteModel: FizibiliteModel ->
-            thirdToFourthScreen(calculationResult, fizibiliteModel)
-        }
+        FourthScreen(viewModel, calculationResult, fizibiliteModel)
     }
 }

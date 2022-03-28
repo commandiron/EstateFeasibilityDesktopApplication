@@ -7,13 +7,20 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.jetbrains.skia.Surface
+import com.arsa_fizibilite_app_by_command.ui.navigation.NavHostComponent
+import com.arsa_fizibilite_app_by_command.ui.navigation.NavHostComponent.Config.First.title
+import com.myapp.data.model.CalculationResult
+import com.myapp.data.model.FizibiliteModel
+import com.myapp.ui.feature.components.BottomNavigationView
+import org.jetbrains.skiko.kotlinBackend
 
 // Color set
 val LightTheme = lightColors() // TODO :
@@ -26,19 +33,25 @@ val DarkTheme = darkColors(
     background = Color(0xFF255560),
 
     surface = Color(0xFFE1E8EB),
+    onSurface = Color(0xFF92ABB6)
 )
 
 @Composable
 fun arsa_fizibilite_app_by_commandTheme(
+    currentRoute: String,
     isDark: Boolean = true, // TODO: If you want to support both light theme and dark theme, you'll need to implement it manually.
+    onBottomNavItemClick: (String) -> Unit,
+
     content: @Composable ColumnScope.() -> Unit,
 ) {
+
+    val bottomBarState = rememberSaveable {(mutableStateOf(true))}
+
     MaterialTheme(
         colors = if (isDark) DarkTheme else LightTheme,
         typography = arsa_fizibilite_app_by_commandTypography
     ) {
         Scaffold(
-            backgroundColor = MaterialTheme.colors.background,
             topBar = {
                 TopAppBar(
                     modifier = Modifier.border(2.dp,Color.Gray),
@@ -57,6 +70,19 @@ fun arsa_fizibilite_app_by_commandTheme(
                         )
                     }
                 }
+            },
+            bottomBar = {
+                //Burada aslında 3 adet children'ı dallara ayırmamız gerekiyor. Daha sonra yapmak üzere bırakıyorum.
+                //Çünkü şu anda fourth screende eğer bottomnavigation bar'ı aktif hale getirirsem kullanıcı her hangi
+                //birisine bastığı anda en başa dönüyor.
+                bottomBarState.value =
+                            currentRoute != NavHostComponent.Config.Second(FizibiliteModel()).title &&
+                            currentRoute != NavHostComponent.Config.Third(FizibiliteModel()).title &&
+                            currentRoute != NavHostComponent.Config.Fourth(CalculationResult(), FizibiliteModel()).title
+
+                BottomNavigationView(bottomBarState.value,currentRoute){
+                    onBottomNavItemClick(it)
+                }
             }
         ) {
             Surface(
@@ -69,3 +95,4 @@ fun arsa_fizibilite_app_by_commandTheme(
         }
     }
 }
+

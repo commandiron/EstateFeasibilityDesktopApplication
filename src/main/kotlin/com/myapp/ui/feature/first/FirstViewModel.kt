@@ -1,5 +1,6 @@
 package com.myapp.ui.feature.first
 
+import androidx.compose.runtime.MutableState
 import kotlinx.coroutines.flow.collect
 import androidx.compose.runtime.mutableStateOf
 import com.arsa_fizibilite_app_by_command.util.ViewModel
@@ -18,13 +19,11 @@ class FirstViewModel @Inject constructor(
     var progressIndicatorDuration = mutableStateOf(0f)
         private set
 
-    var fizibiliteModelFromInternet = mutableStateOf(FizibiliteModel())
+    var fizibiliteModelFromInternet: MutableState<FizibiliteModel?> = mutableStateOf(null)
         private set
 
     var isLoading = mutableStateOf(false)
         private set
-
-    var dataIsLoaded = mutableStateOf(false)
 
     var isErrorHappen = mutableStateOf(false)
 
@@ -36,15 +35,17 @@ class FirstViewModel @Inject constructor(
                         isLoading.value = true
                         isErrorHappen.value = false
 
-                        while(progressIndicatorDuration.value < 1.0f){
-                            delay(20)
-                            progressIndicatorDuration.value += 0.002f
+                        launch {
+                            progressIndicatorDuration.value = 0f
+                            while(progressIndicatorDuration.value < 1.0f){
+                                delay(20)
+                                progressIndicatorDuration.value += 0.006f
+                            }
                         }
                     }
                     is Response.Success -> {
                         isLoading.value = false
                         fizibiliteModelFromInternet.value = response.data
-                        dataIsLoaded.value = true
                     }
                     is Response.Error -> {
                         println(response.message)

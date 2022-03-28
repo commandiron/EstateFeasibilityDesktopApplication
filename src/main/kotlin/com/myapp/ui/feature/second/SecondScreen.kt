@@ -8,35 +8,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
+import com.arkivanov.decompose.router.Router
+import com.arkivanov.decompose.router.replaceCurrent
 import com.arsa_fizibilite_app_by_command.ui.value.R
 import com.arsa_fizibilite_app_by_command.ui.value.R.string.TEXT_SECOND_LOGIN_OLAMADINIZ
 import com.arsa_fizibilite_app_by_command.ui.value.R.string.TEXT_SECOND_LUTFEN_LOGIN_OLUNUZ
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.ui.feature.components.CustomLinearProgressIndicator
 import com.myapp.ui.feature.second.SecondViewModel
-import java.awt.Point
 
 @Composable
 fun SecondScreen(
     secondViewModel: SecondViewModel,
-    fizibiliteModelFromFirstCal: FizibiliteModel,
+    fizibiliteModelFromFirstScreen: FizibiliteModel,
     secondToThirdScreen:(FizibiliteModel)  -> Unit,
     windowState: WindowState
 ) {
-    fizibiliteModelFromFirstCal //-> Burda Arsa Alanını ve mahalleyi çektik.
-    //şimdi siteye kullanıcıyı login ettiriceğiz.
-    //Ordan brüt fiyatı çekeceğiz.
-    //Ordan üçüncü sayfaya geçeçeğiz.
-
-    var fizibiliteModelFromWebCraping by remember { mutableStateOf(FizibiliteModel())}
-    fizibiliteModelFromWebCraping = secondViewModel.fizibiliteModelFromInternet.value
 
     val isLoading by remember {secondViewModel.isLoading }
 
-    val dataIsLoaded by remember {secondViewModel.dataIsLoaded}
-    LaunchedEffect(dataIsLoaded){
-        if(dataIsLoaded){
-            secondToThirdScreen(fizibiliteModelFromWebCraping)
+    val fizibiliteModelFromWebScraping by remember { secondViewModel.fizibiliteModelFromInternet}
+    LaunchedEffect(fizibiliteModelFromWebScraping){
+        if(fizibiliteModelFromWebScraping != null){
+            secondToThirdScreen(fizibiliteModelFromWebScraping!!)
         }
     }
 
@@ -47,8 +41,11 @@ fun SecondScreen(
         }
     }
 
+    var firstTimeFlag by remember { secondViewModel.firstTimeFlag }
     LaunchedEffect(Unit){
-        secondViewModel.loginWebScrapingSite(windowState.position, windowState.size)
+        if(!firstTimeFlag){
+            secondViewModel.loginWebScrapingSite(windowState.position, windowState.size)
+        }
     }
 
     val duration by remember{secondViewModel.progressIndicatorDuration}
@@ -88,7 +85,7 @@ fun SecondScreen(
 
                 Button(
                     onClick = {
-                        secondViewModel.getBirimSatisFiyatiWithSelenium(fizibiliteModelFromFirstCal)
+                        secondViewModel.getBirimSatisFiyatiWithSelenium(fizibiliteModelFromFirstScreen)
                     }
                 ) {
                     Text(text = R.string.ACTION_SECOND_ILERI)

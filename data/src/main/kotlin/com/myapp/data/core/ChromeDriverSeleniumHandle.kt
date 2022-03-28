@@ -1,6 +1,5 @@
 package com.myapp.data.core
 
-import com.myapp.data.RandomUserAgent
 import com.myapp.data.core.KillRunningWinProcesses.isProcessRunning
 import com.myapp.data.core.KillRunningWinProcesses.killProcess
 import io.github.bonigarcia.wdm.WebDriverManager
@@ -9,7 +8,6 @@ import org.openqa.selenium.By
 import org.openqa.selenium.Dimension
 import org.openqa.selenium.Point
 import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.devtools.idealized.Network
@@ -27,6 +25,7 @@ object ChromeDriverSeleniumHandle {
         isHeadless: Boolean = false,
         windowPosition: Point = Point(0,0),
         dimension: Dimension = Dimension(800,520)):WebDriver{
+
 
         quitDriver()
 

@@ -7,13 +7,21 @@ import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_1
 import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_2
 import com.myapp.data.core.Constants.IMAR_URL
 import com.myapp.data.core.Response
+import com.myapp.data.core.inAppCalculationForFeasibility
+import com.myapp.data.model.CalculationResult
+import com.myapp.data.model.SavedCalculationDto
 import com.myapp.data.util.getAmount
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import org.apache.commons.lang3.StringUtils
+import org.kodein.db.DB
+import org.kodein.db.OpenPolicy
+import org.kodein.db.impl.open
+import org.kodein.db.orm.kotlinx.KotlinxSerializer
 import org.openqa.selenium.By
 import org.openqa.selenium.Point
 import org.openqa.selenium.support.ui.Select
@@ -22,22 +30,28 @@ import javax.inject.Inject
 class MyRepo @Inject constructor() {
 
     init {
-        //BU KISMI DAHA SONRA DB AÇARKEN KULLANACAĞIM
-//        val dbDirectory = "C:/Users/Emir/Desktop/dbtry"
-//        val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+        try {
+
+
+
+//            fun load(db: DB, id: String): SavedCalculationDto = db.get(db.keyById(id))!!
 //
-//        fun store(db: DB, mahalleFiyat: MahalleFiyat) { db.put(mahalleFiyat) }
+//            fun test(db: DB) {
+//                val id = UUID.randomUUID().toString() // Kodein-DB provides the UUID util
 //
-//        fun load(db: DB, id: String): MahalleFiyat = db.get(db.keyById<MahalleFiyat>(id))!!
+//                val savedCalculationDto1 = SavedCalculationDto(id = id, FizibiliteModel(), CalculationResult())
+//                //Store
+//                store(db, savedCalculationDto1)
+//                //Load
+//                val savedCalculationDto2 = load(db, id)
 //
-//        fun test(db: DB) {
-//            val id = UUID.randomUUID().toString() // Kodein-DB provides the UUID util
-//            val mahalleFiyat1 = MahalleFiyat(id,"Sahrayicedit", "23546")
-//            store(db, mahalleFiyat1)
-//            val mahalleFiyat2 = load(db, id)
-//            println(mahalleFiyat2)}
-//
-//        test(db)
+//                println(savedCalculationDto2)
+//            }
+
+
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
     suspend fun getArsaAlaniVeMahalleAdiWithSelenium(fizibiliteModel: FizibiliteModel): Flow<Response<FizibiliteModel>> = callbackFlow {
@@ -74,9 +88,11 @@ class MyRepo @Inject constructor() {
                 fizibiliteModelOutPut.projeMahalle = mahalle
                 fizibiliteModelOutPut.arsaAlani = arsaAlani
 
+                driver.quit()
+
                 this@callbackFlow.trySendBlocking(Response.Success(fizibiliteModelOutPut))
 
-                driver.quit()
+
             }catch (e:Exception){
                 this@callbackFlow.trySendBlocking(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
             }
@@ -95,8 +111,6 @@ class MyRepo @Inject constructor() {
         launch(Dispatchers.IO) {
 
             try {
-                delay(1000.toLong())
-
                 val driver = ChromeDriverSeleniumHandle.setSelenium(windowPosition = Point(windowPositionX.toInt(),windowPositionY.toInt()))
                 driver.get(BIRIM_SATIS_FIYATI_ENDEKS_URL_1)
 
@@ -166,6 +180,7 @@ class MyRepo @Inject constructor() {
                 ChromeDriverSeleniumHandle.sendHumanLikeClick("//*[@id=\"estate360Container\"]/div/div[2]/h2[1]") //Boşluk - lose focus için
                 ChromeDriverSeleniumHandle.sendHumanLikeClick("//*[@id=\"reiForm\"]/div") //Endeks button.
 
+                ChromeDriverSeleniumHandle.waitUntil("//*[@id=\"appRoot\"]/div[13]/div[2]/div[2]/div/div[3]/div/div[2]/div[1]/div[1]/span",5)
                 val selectResult =
                     driver.findElement(By.xpath("//*[@id=\"appRoot\"]/div[13]/div[2]/div[2]/div/div[3]/div/div[2]/div[1]/div[1]/span"))
                 val brutAlanBirimSatisFiyati = selectResult.text.toString().getAmount().toDouble()
@@ -187,5 +202,27 @@ class MyRepo @Inject constructor() {
             channel.close()
             cancel()
         }
+    }
+
+    suspend fun getInAppCalculationForFeasibility(fizibiliteModel: FizibiliteModel): Flow<Response<CalculationResult>> = flow {
+        try {
+            emit(Response.Loading)
+            delay(1000)
+            emit(Response.Success(inAppCalculationForFeasibility.calculate(fizibiliteModel)))
+        }catch (e:Exception){
+            emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
+    }
+
+    fun saveCalculationResult(){
+
+        //Buradan devem dbye kayıt işlemlerini yapıyorum.
+
+//        val dbDirectory = "C:/Users/Emir/Desktop/dbtry2"
+//        val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+//        db.put(SavedCalculationDto())
+//        db.close()
+
+        fun store(db: DB, savedCalculationDto: SavedCalculationDto) { db.put(savedCalculationDto) }
     }
 }

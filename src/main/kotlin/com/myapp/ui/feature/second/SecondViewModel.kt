@@ -1,5 +1,6 @@
 package com.myapp.ui.feature.second
 
+import androidx.compose.runtime.MutableState
 import kotlinx.coroutines.flow.collect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.unit.DpSize
@@ -8,6 +9,7 @@ import com.arsa_fizibilite_app_by_command.util.ViewModel
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.usecase.UseCases
 import com.myapp.data.core.Response
+import com.myapp.util.Constants
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +18,7 @@ class SecondViewModel @Inject constructor(
     private val useCases: UseCases,
 ) : ViewModel() {
 
-    var fizibiliteModelFromInternet = mutableStateOf(FizibiliteModel())
+    var fizibiliteModelFromInternet: MutableState<FizibiliteModel?> = mutableStateOf(null)
         private set
 
     var progressIndicatorDuration = mutableStateOf(0f)
@@ -25,10 +27,10 @@ class SecondViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
         private set
 
-    var dataIsLoaded = mutableStateOf(false)
+    var isErrorHappen = mutableStateOf(false)
         private set
 
-    var isErrorHappen = mutableStateOf(false)
+    var firstTimeFlag = mutableStateOf(false)
 
     fun loginWebScrapingSite(windowPosition: WindowPosition, windowSize: DpSize){
         viewModelScope.launch {
@@ -37,6 +39,7 @@ class SecondViewModel @Inject constructor(
                     is Response.Loading -> {
                     }
                     is Response.Success -> {
+                        firstTimeFlag.value = true
                     }
                     is Response.Error -> {
                     }
@@ -53,15 +56,21 @@ class SecondViewModel @Inject constructor(
                         isLoading.value = true
                         isErrorHappen.value = false
 
-                        while(progressIndicatorDuration.value < 1.0f){
-                            delay(20)
-                            progressIndicatorDuration.value += 0.0019f
+                        launch {
+                            progressIndicatorDuration.value = 0f
+                            while(progressIndicatorDuration.value < 1.0f){
+                                delay(20)
+                                progressIndicatorDuration.value += 0.0017f
+                            }
                         }
                     }
                     is Response.Success -> {
                         isLoading.value = false
                         fizibiliteModelFromInternet.value = response.data
-                        dataIsLoaded.value = true
+
+                        //İnşaat birim maliyetini sabit veriyorum fakat daha sonra bunun için bir modül yazacağım.
+                        fizibiliteModelFromInternet.value!!.insaatBirimMaliyeti = Constants.insaatBirimMaliyeti
+                        fizibiliteModelFromInternet.value!!.hedefKarOrani = Constants.hedefKarOrani
                     }
                     is Response.Error -> {
                         println(response.message)

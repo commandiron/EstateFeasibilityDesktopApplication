@@ -19,20 +19,19 @@ fun FirstScreen(
     firstToSecondScreen:(FizibiliteModel)  -> Unit
 ) {
 
-    var projeAdi by remember { mutableStateOf("Test1") }
+    var projeAdi by remember { mutableStateOf("Proje Fizibilite - 1") }
     var projeSehir by remember { mutableStateOf("İstanbul") } //Uygulama şu anlık şehir değiştirmeyi desteklemiyor.
     var projeIlce by remember { mutableStateOf("Kadıköy") } //Uygulama şu anlık ilçe değiştirmeyi desteklemiyor.
     var ada by remember { mutableStateOf("347") }
     var parsel by remember { mutableStateOf("1")}
 
-    var fizibiliteModelFromWebCraping by remember { mutableStateOf(FizibiliteModel())}
-    fizibiliteModelFromWebCraping = firstViewModel.fizibiliteModelFromInternet.value
+    val fizibiliteModelFromWebScraping by remember { firstViewModel.fizibiliteModelFromInternet}
 
     val isLoading by remember {firstViewModel.isLoading}
-    val dataIsLoaded by remember {firstViewModel.dataIsLoaded}
-    LaunchedEffect(dataIsLoaded){
-        if(dataIsLoaded){
-            firstToSecondScreen(fizibiliteModelFromWebCraping)
+
+    LaunchedEffect(fizibiliteModelFromWebScraping){
+        if(fizibiliteModelFromWebScraping != null){
+            firstToSecondScreen(fizibiliteModelFromWebScraping!!)
         }
     }
 

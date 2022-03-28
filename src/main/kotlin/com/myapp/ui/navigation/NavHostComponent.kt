@@ -1,10 +1,15 @@
 package com.arsa_fizibilite_app_by_command.ui.navigation
 
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.window.WindowState
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfadeScale
+import com.arkivanov.decompose.router.bringToFront
+import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.replaceCurrent
 import com.arkivanov.decompose.router.router
 import com.arkivanov.essenty.parcelable.Parcelable
@@ -12,8 +17,13 @@ import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.di.DaggerAppComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.main.SecondScreenComponent
 import com.arsa_fizibilite_app_by_command.ui.feature.splash.SplashScreenComponent
+import com.arsa_fizibilite_app_by_command.ui.value.arsa_fizibilite_app_by_commandTheme
 import com.myapp.data.model.FizibiliteModel
+import com.myapp.data.model.CalculationResult
 import com.myapp.ui.feature.first.FirstScreenComponent
+import com.myapp.ui.feature.fourth.FourthScreenComponent
+import com.myapp.ui.feature.saved.SavedScreenComponent
+import com.myapp.ui.feature.settings.SettingsScreenComponent
 import com.myapp.ui.feature.third.ThirdScreenComponent
 
 /**
@@ -21,7 +31,7 @@ import com.myapp.ui.feature.third.ThirdScreenComponent
  */
 class NavHostComponent(
     private val componentContext: ComponentContext,
-    private val windowState: WindowState
+    private val windowState: WindowState,
 ) : Component, ComponentContext by componentContext {
 
     private val appComponent: AppComponent = DaggerAppComponent
@@ -31,7 +41,29 @@ class NavHostComponent(
      * Router configuration
      */
     private val router = router<Config, Component>(
-        initialConfiguration = Config.First,
+        initialConfiguration = Config.
+            First
+//        Third(
+//            FizibiliteModel(
+//            projeAdi = "Test1",
+//            projeSehir = "İstanbul",
+//            projeIlce = "Kadıköy",
+//            projeMahalle = "Sahrayıcedit",
+//            ada = "371",
+//            parsel = "12",
+//            arsaAlani = 1200.0,
+//            brutAlanBirimSatisFiyati = 30000.0))
+//        Fourth(
+//            CalculationResult(
+//                1500.0,
+//                15000000.0,
+//                1000000.0,
+//                1000.0,
+//                71.0,
+//                500.0,
+//                29.0
+//
+//            ),
 //            FizibiliteModel(
 //                projeAdi = "Test1",
 //                projeSehir = "İstanbul",
@@ -41,7 +73,9 @@ class NavHostComponent(
 //                parsel = "12",
 //                arsaAlani = 1200.0,
 //                brutAlanBirimSatisFiyati = 30000.0
-//                )), //FOR TEST
+//            )
+//        )
+        ,
         handleBackButton = true,
         childFactory = ::createScreenComponent
     )
@@ -53,6 +87,10 @@ class NavHostComponent(
 
         return when (config) {
             is Config.Splash -> SplashScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext
+            )
+            is Config.Saved -> SavedScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext
             )
@@ -71,7 +109,18 @@ class NavHostComponent(
             is Config.Third -> ThirdScreenComponent(
                 appComponent = appComponent,
                 componentContext = componentContext,
+                fizibiliteModel = config.fizibiliteModel,
+                thirdToFourthScreen = ::thirdToFourthScreen
+            )
+            is Config.Fourth -> FourthScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext,
+                calculationResult = config.calculationResult,
                 fizibiliteModel = config.fizibiliteModel
+            )
+            is Config.Settings -> SettingsScreenComponent(
+                appComponent = appComponent,
+                componentContext = componentContext
             )
             null -> SplashScreenComponent(
                 appComponent = appComponent,
@@ -88,25 +137,51 @@ class NavHostComponent(
         router.replaceCurrent(Config.Third(fizibiliteModel))
     }
 
+    private fun thirdToFourthScreen(calculationResult: CalculationResult, fizibiliteModel: FizibiliteModel) {
+        router.replaceCurrent(Config.Fourth(calculationResult, fizibiliteModel))
+    }
+
+    private fun bottomNavigate(toScreenTitle: String){
+        when(toScreenTitle){
+            Config.Saved.title -> router.replaceCurrent(Config.Saved)
+            Config.First.title -> router.replaceCurrent(Config.First)
+            Config.Settings.title -> router.replaceCurrent(Config.Settings)
+        }
+    }
 
     /**
      * Available screensSelectApp
      */
-    private sealed class Config : Parcelable {
-        object Splash : Config()
-        object First : Config()
-        data class Second(val fizibiliteModel: FizibiliteModel) : Config()
-        data class Third(val fizibiliteModel: FizibiliteModel) : Config()
+    sealed class Config(var title:String, var icon: ImageVector) : Parcelable {
+        //Splash
+        object Splash : Config("Hesaplama Yap", Icons.Filled.Home)
+        //Navigation title: Kaydedilenler
+        object Saved : Config("Kaydedilenler", Icons.Filled.List)
+        //Navigation title: Hesaplama yap
+        object First : Config("Hesaplama Yap", Icons.Filled.Home)
+        data class Second(val fizibiliteModel: FizibiliteModel) : Config("Second", Icons.Filled.Home)
+        data class Third(val fizibiliteModel: FizibiliteModel) : Config("Third", Icons.Filled.Home)
+        data class Fourth(val calculationResult: CalculationResult, val fizibiliteModel: FizibiliteModel) : Config("Fourth", Icons.Filled.Home)
+        //Navigation title: Ayarlar
+        object Settings : Config("Ayarlar", Icons.Filled.Settings)
     }
-
 
     @Composable
     override fun render() {
-        Children(
-            routerState = router.state,
-            animation = crossfadeScale()
-        ) { child ->
-            child.instance.render()
+
+        var currentRoute by remember { mutableStateOf("") }
+
+        arsa_fizibilite_app_by_commandTheme(currentRoute = currentRoute, onBottomNavItemClick = {
+            bottomNavigate(it)
+        }) {
+            Children(
+                routerState = router.state,
+                animation = crossfadeScale()
+            ) { child ->
+                currentRoute = child.configuration.title
+                println(currentRoute)
+                child.instance.render()
+            }
         }
     }
 }
