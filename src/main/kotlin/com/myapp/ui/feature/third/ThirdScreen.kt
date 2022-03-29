@@ -194,7 +194,6 @@ fun ThirdScreen(
                     inputTypeIsNumber = true
                 )
                 {
-                    println("1" + it)
                     hedefKarOrani = it
                 }
 

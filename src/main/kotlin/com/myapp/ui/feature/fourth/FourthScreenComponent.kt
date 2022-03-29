@@ -8,13 +8,16 @@ import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
 import com.myapp.data.model.CalculationResult
 import com.myapp.data.model.FizibiliteModel
+import com.myapp.data.model.SavedCalculationDto
 import javax.inject.Inject
 
 class FourthScreenComponent(
     appComponent: AppComponent,
     private val componentContext: ComponentContext,
     private val calculationResult: CalculationResult,
-    private val fizibiliteModel: FizibiliteModel
+    private val fizibiliteModel: FizibiliteModel,
+    private val clickedItemIdFromSavedScreen: String,
+    private val fourthToFirstScreen: () -> Unit,
 ) : Component, ComponentContext by componentContext {
 
     @Inject
@@ -31,6 +34,6 @@ class FourthScreenComponent(
             viewModel.init(scope)
         }
 
-        FourthScreen(viewModel, calculationResult, fizibiliteModel)
+        FourthScreen(viewModel, calculationResult, fizibiliteModel, clickedItemIdFromSavedScreen, fourthToFirstScreen)
     }
 }

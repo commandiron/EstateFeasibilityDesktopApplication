@@ -24,5 +24,9 @@ object R {
         const val ACTION_SECOND_ILERI = "Giriş Yaptım. İleri"
 
         const val ACTION_THIRD_HESAPLA = "Hesapla!"
+
+        const val ACTION_FOURTH_GERI_DON = "Geri Dön"
+        const val ACTION_FOURTH_KAYDET = "Verileri Kaydet"
+        const val ACTION_FOURTH_CIKTI_AL = "Çıktı Al"
     }
 }

@@ -37,7 +37,7 @@ class App(
 fun main() {
 
     val appArgs = AppArgs(
-        appName = "arsa_fizibilite_app_by_command", // To show on title bar
+        appName = "Kat Karşılığı İnşaat Fizibilite Uygulaması", // To show on title bar
         version = "v1.0.0", // To show on title inside brackets
         versionCode = 100 // To compare with latest version code (in case if you want to prompt update)
     )

@@ -5,6 +5,7 @@ import com.myapp.data.core.eliminateTurkishCharacters
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_1
 import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_2
+import com.myapp.data.core.Constants.DB_PATH
 import com.myapp.data.core.Constants.IMAR_URL
 import com.myapp.data.core.Response
 import com.myapp.data.core.inAppCalculationForFeasibility
@@ -18,10 +19,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import org.apache.commons.lang3.StringUtils
-import org.kodein.db.DB
-import org.kodein.db.OpenPolicy
+import org.kodein.db.*
 import org.kodein.db.impl.open
 import org.kodein.db.orm.kotlinx.KotlinxSerializer
+import org.kodein.memory.util.UUID
 import org.openqa.selenium.By
 import org.openqa.selenium.Point
 import org.openqa.selenium.support.ui.Select
@@ -68,6 +69,7 @@ class MyRepo @Inject constructor() {
                 //Variables
                 var arsaAlani: Double = 0.0
                 var mahalle: String = ""
+                var imagePath: String = ""
 
                 driver.get(IMAR_URL) //Sadece istanbul/kadıöy ilçesi için
 
@@ -84,9 +86,13 @@ class MyRepo @Inject constructor() {
                 mahalle = mahalleSelector.text.toString().eliminateTurkishCharacters().lowercase().filter { !it.isWhitespace() }
                 //result
 
+                delay(3000) //Harita gelene kadar nasıl bekleteceğim.
+                imagePath = ChromeDriverSeleniumHandle.getScreenShot("//*[@id=\"myCanvas\"]") //SS almayı deniyorum
+
                 //Result
                 fizibiliteModelOutPut.projeMahalle = mahalle
                 fizibiliteModelOutPut.arsaAlani = arsaAlani
+                fizibiliteModelOutPut.imagePath = imagePath
 
                 driver.quit()
 
@@ -141,7 +147,9 @@ class MyRepo @Inject constructor() {
 
                 driver.get(BIRIM_SATIS_FIYATI_ENDEKS_URL_2)
 
-                ChromeDriverSeleniumHandle.waitUntil("/html/body/div[3]/div/ul/li[4]/a",5)
+                ChromeDriverSeleniumHandle.waitUntilVisibilityOfElement("/html/body/div[3]/div/ul",5)
+
+                //*[@id="bodycontainer"]/div[2]
 
                 ChromeDriverSeleniumHandle.sendHumanLikeSelectAndClick(
                     "//*[@id=\"ddlReiCity\"]",
@@ -180,7 +188,7 @@ class MyRepo @Inject constructor() {
                 ChromeDriverSeleniumHandle.sendHumanLikeClick("//*[@id=\"estate360Container\"]/div/div[2]/h2[1]") //Boşluk - lose focus için
                 ChromeDriverSeleniumHandle.sendHumanLikeClick("//*[@id=\"reiForm\"]/div") //Endeks button.
 
-                ChromeDriverSeleniumHandle.waitUntil("//*[@id=\"appRoot\"]/div[13]/div[2]/div[2]/div/div[3]/div/div[2]/div[1]/div[1]/span",5)
+                ChromeDriverSeleniumHandle.waitUntilVisibilityOfElement("//*[@id=\"appRoot\"]/div[13]/div[2]/div[2]/div/div[3]/div/div[2]/div[1]/div[1]/span",5)
                 val selectResult =
                     driver.findElement(By.xpath("//*[@id=\"appRoot\"]/div[13]/div[2]/div[2]/div/div[3]/div/div[2]/div[1]/div[1]/span"))
                 val brutAlanBirimSatisFiyati = selectResult.text.toString().getAmount().toDouble()
@@ -214,15 +222,103 @@ class MyRepo @Inject constructor() {
         }
     }
 
-    fun saveCalculationResult(){
+    suspend fun saveCalculation(fizibiliteModel: FizibiliteModel, calculationResult: CalculationResult): Flow<Response<Boolean>> = flow{
+        try {
+            emit(Response.Loading)
+            val dbDirectory = DB_PATH
+            val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+            val id = UUID.randomUUID().toString()
+            db.put(SavedCalculationDto(id,fizibiliteModel, calculationResult))
+            db.close()
+            emit(Response.Success(true))
+        }catch (e:Exception){
+            emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
+    }
 
-        //Buradan devem dbye kayıt işlemlerini yapıyorum.
+    suspend fun loadCalculations(): Flow<Response<List<SavedCalculationDto>>> = flow {
+        try {
+            emit(Response.Loading)
+            val dbDirectory = DB_PATH
+            val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+            val cursor = db.findAll()
 
-//        val dbDirectory = "C:/Users/Emir/Desktop/dbtry2"
-//        val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
-//        db.put(SavedCalculationDto())
-//        db.close()
+            var listOfSavedCalculationDto = listOf<SavedCalculationDto>()
 
-        fun store(db: DB, savedCalculationDto: SavedCalculationDto) { db.put(savedCalculationDto) }
+            cursor.use {
+                while (cursor.isValid()) {
+                    val model = cursor.model()
+                    listOfSavedCalculationDto += model as SavedCalculationDto
+                    cursor.next()
+                }
+                emit(Response.Success(listOfSavedCalculationDto))
+            }
+            db.close()
+        }catch (e:Exception){
+            emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
+    }
+
+    suspend fun deleteCalculation(id: String): Flow<Response<Boolean>> = flow {
+        try {
+            emit(Response.Loading)
+            val dbDirectory = DB_PATH
+            val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+            val cursor = db.findAll()
+
+            var key : Key<Any>? = null
+            cursor.use {
+                while (cursor.isValid()) {
+                    val model = cursor.model() as SavedCalculationDto
+                    if(model.id == id){
+                        key = cursor.key()
+                    }
+                    cursor.next()
+                }
+            }
+
+            if(key != null){
+                db.delete(key!!)
+            }
+
+            db.close()
+
+            emit(Response.Success(true))
+
+        }catch (e:Exception){
+            emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
+    }
+
+    suspend fun loadSingleCalculation(id: String): Flow<Response<SavedCalculationDto>> = flow {
+        try {
+            emit(Response.Loading)
+            val dbDirectory = DB_PATH
+            val db = DB.open(dbDirectory, KotlinxSerializer(), OpenPolicy.OpenOrCreate)
+            val cursor = db.findAll()
+
+            var key : Key<Any>? = null
+            cursor.use {
+                while (cursor.isValid()) {
+                    val model = cursor.model() as SavedCalculationDto
+                    if(model.id == id){
+                        key = cursor.key()
+                    }
+                    cursor.next()
+                }
+            }
+
+            if(key != null){
+                val savedCalculationDto = db.get(key!!) as SavedCalculationDto
+                emit(Response.Success(savedCalculationDto))
+            }else{
+                emit(Response.Error("Cant find key!"))
+            }
+
+            db.close()
+
+        }catch (e:Exception){
+            emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
     }
 }

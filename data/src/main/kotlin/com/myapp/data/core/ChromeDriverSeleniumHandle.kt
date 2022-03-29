@@ -4,16 +4,16 @@ import com.myapp.data.core.KillRunningWinProcesses.isProcessRunning
 import com.myapp.data.core.KillRunningWinProcesses.killProcess
 import io.github.bonigarcia.wdm.WebDriverManager
 import kotlinx.coroutines.delay
-import org.openqa.selenium.By
-import org.openqa.selenium.Dimension
-import org.openqa.selenium.Point
-import org.openqa.selenium.WebDriver
+import org.apache.commons.io.FileUtils
+import org.kodein.memory.util.UUID
+import org.openqa.selenium.*
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.devtools.idealized.Network
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.Select
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.io.File
 import java.time.Duration
 import java.util.*
 
@@ -124,7 +124,21 @@ object ChromeDriverSeleniumHandle {
         }
     }
 
-    fun waitUntil(elementXpath: String, timeOutInSeconds: Long){
+    fun waitUntilVisibilityOfElement(elementXpath: String, timeOutInSeconds: Long){
         WebDriverWait(driver,timeOutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)))
+    }
+
+    fun getScreenShot(elementXpath: String): String{
+        try {
+            val file = driver.findElement(By.xpath(elementXpath)).getScreenshotAs(OutputType.FILE)
+            val uuid = UUID.randomUUID().toString()
+            val path = "C:/Users/Emir/Desktop/FizibiliteUygulamasi/${uuid}.png"
+            val destFile = File(path)
+            FileUtils.copyFile(file,destFile)
+            return path
+        }catch (e:Exception){
+            e.printStackTrace()
+            return ""
+        }
     }
 }

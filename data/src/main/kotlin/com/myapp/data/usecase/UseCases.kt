@@ -7,6 +7,9 @@ data class UseCases @Inject constructor(
     val loginWebScrapingSite: LoginWebScrapingSite,
     val getBirimSatisFiyatiWithSelenium: GetBirimSatisFiyatiWithSelenium,
     val getInAppCalculationForFeasibility: GetInAppCalculationForFeasibility,
-    val saveCalculationResult: SaveCalculationResult
+    val saveCalculation: SaveCalculation,
+    val loadCalculations: LoadCalculations,
+    val deleteCalculation: DeleteCalculation,
+    val loadSingleCalculation: LoadSingleCalculation
 ) {
 }

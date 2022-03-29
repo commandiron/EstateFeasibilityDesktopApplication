@@ -65,7 +65,7 @@ class NavHostComponent(
 //
 //            ),
 //            FizibiliteModel(
-//                projeAdi = "Test1",
+//                projeAdi = "Test2",
 //                projeSehir = "İstanbul",
 //                projeIlce = "Kadıköy",
 //                projeMahalle = "Sahrayıcedit",
@@ -92,7 +92,8 @@ class NavHostComponent(
             )
             is Config.Saved -> SavedScreenComponent(
                 appComponent = appComponent,
-                componentContext = componentContext
+                componentContext = componentContext,
+                savedToFourthScreen = ::savedToFourthScreen
             )
             is Config.First -> FirstScreenComponent(
                 appComponent = appComponent,
@@ -116,7 +117,10 @@ class NavHostComponent(
                 appComponent = appComponent,
                 componentContext = componentContext,
                 calculationResult = config.calculationResult,
-                fizibiliteModel = config.fizibiliteModel
+                fizibiliteModel = config.fizibiliteModel,
+                clickedItemIdFromSavedScreen = config.clickedItemIdFromSavedScreen,
+                fourthToFirstScreen = ::fourthToFirstScreen,
+
             )
             is Config.Settings -> SettingsScreenComponent(
                 appComponent = appComponent,
@@ -141,6 +145,14 @@ class NavHostComponent(
         router.replaceCurrent(Config.Fourth(calculationResult, fizibiliteModel))
     }
 
+    private fun fourthToFirstScreen() {
+        router.replaceCurrent(Config.First)
+    }
+
+    private fun savedToFourthScreen(clickedItemIdFromSavedScreen: String) {
+        router.replaceCurrent(Config.Fourth(clickedItemIdFromSavedScreen = clickedItemIdFromSavedScreen))
+    }
+
     private fun bottomNavigate(toScreenTitle: String){
         when(toScreenTitle){
             Config.Saved.title -> router.replaceCurrent(Config.Saved)
@@ -154,14 +166,14 @@ class NavHostComponent(
      */
     sealed class Config(var title:String, var icon: ImageVector) : Parcelable {
         //Splash
-        object Splash : Config("Hesaplama Yap", Icons.Filled.Home)
+        object Splash : Config("Fizibilite Yap", Icons.Filled.Home)
         //Navigation title: Kaydedilenler
-        object Saved : Config("Kaydedilenler", Icons.Filled.List)
+        object Saved : Config("Fizibilite Raporlarım", Icons.Filled.List)
         //Navigation title: Hesaplama yap
-        object First : Config("Hesaplama Yap", Icons.Filled.Home)
+        object First : Config("Fizibilite Yap", Icons.Filled.Home)
         data class Second(val fizibiliteModel: FizibiliteModel) : Config("Second", Icons.Filled.Home)
         data class Third(val fizibiliteModel: FizibiliteModel) : Config("Third", Icons.Filled.Home)
-        data class Fourth(val calculationResult: CalculationResult, val fizibiliteModel: FizibiliteModel) : Config("Fourth", Icons.Filled.Home)
+        data class Fourth(val calculationResult: CalculationResult = CalculationResult(), val fizibiliteModel: FizibiliteModel = FizibiliteModel(), val clickedItemIdFromSavedScreen: String = "") : Config("Fourth", Icons.Filled.Home)
         //Navigation title: Ayarlar
         object Settings : Config("Ayarlar", Icons.Filled.Settings)
     }
@@ -179,7 +191,6 @@ class NavHostComponent(
                 animation = crossfadeScale()
             ) { child ->
                 currentRoute = child.configuration.title
-                println(currentRoute)
                 child.instance.render()
             }
         }

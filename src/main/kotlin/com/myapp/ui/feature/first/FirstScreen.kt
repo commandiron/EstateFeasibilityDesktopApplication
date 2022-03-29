@@ -60,7 +60,19 @@ fun FirstScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = 5.dp,
+                    contentColor = Color.Black
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(4.dp)) {
+                        Text("HESAPLAMAYA BAŞLA")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
 
                 CustomBasicTextField(
                     textIsEmptyError = projeAdi.isEmpty(),
@@ -114,7 +126,7 @@ fun FirstScreen(
                     parsel = it
                 }
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 Button(
                     onClick = {

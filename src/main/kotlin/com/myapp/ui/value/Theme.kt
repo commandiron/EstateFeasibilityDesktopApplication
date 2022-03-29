@@ -52,25 +52,26 @@ fun arsa_fizibilite_app_by_commandTheme(
         typography = arsa_fizibilite_app_by_commandTypography
     ) {
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    modifier = Modifier.border(2.dp,Color.Gray),
-                    backgroundColor = MaterialTheme.colors.surface,
-                ) {
-
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            textAlign = TextAlign.Center,
-                            fontSize = 20.sp,
-                            text = "FİZİBİLİTE UYGULAMASI",
-                            color = Color.Black
-                        )
-                    }
-                }
-            },
+            //Şu anlık daha iyi görünüm için topBar'ı kaldırdım.
+//            topBar = {
+//                TopAppBar(
+//                    modifier = Modifier.border(2.dp,Color.Gray),
+//                    backgroundColor = MaterialTheme.colors.surface,
+//                ) {
+//
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Text(
+//                            textAlign = TextAlign.Center,
+//                            fontSize = 20.sp,
+//                            text = "FİZİBİLİTE UYGULAMASI",
+//                            color = Color.Black
+//                        )
+//                    }
+//                }
+//            },
             bottomBar = {
                 //Burada aslında 3 adet children'ı dallara ayırmamız gerekiyor. Daha sonra yapmak üzere bırakıyorum.
                 //Çünkü şu anda fourth screende eğer bottomnavigation bar'ı aktif hale getirirsem kullanıcı her hangi

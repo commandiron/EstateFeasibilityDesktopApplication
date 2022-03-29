@@ -33,8 +33,6 @@ object inAppCalculationForFeasibility {
                 katMalikleriBrutAlan = katMalikleriBrutAlan,
                 katMalikleriYuzde = katMalikleriYuzde)
 
-        println(calculationResult)
-
         return calculationResult
     }
 }
