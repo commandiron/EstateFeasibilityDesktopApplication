@@ -20,9 +20,9 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
 * Tech-stack ⚛️
     * [Compose Desktop](https://www.jetbrains.com/lp/compose-desktop/) - develop desktop applications with compose
     * [Selenium](https://www.selenium.dev) - web scraping and auto browser
+    * [Kodein DB](https://docs.kodein.org/kodein-db/0.8/index.html) - database.
     * [Decompose](https://arkivanov.github.io/Decompose/)
     * [Kotlin](https://kotlinlang.org/) + [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html) - perform background operation
-    * [Kodein DB](https://docs.kodein.org/kodein-db/0.8/index.html) - database.
     * [Flows](https://developer.android.com/kotlin/flow)
     * [Dagger](https://github.com/google/dagger) - DI
     * [Jetpack](https://developer.android.com/jetpack)
