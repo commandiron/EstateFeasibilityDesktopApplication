@@ -6,7 +6,7 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
 
 |View|
 |----------------------|
-|<img src="https://user-images.githubusercontent.com/50905347/160829892-02a3127f-a3e5-41ff-bbe4-f88b4de633da.gif" width="500" height="500">|
+|<img src="https://user-images.githubusercontent.com/50905347/160832909-33be2057-e908-416c-81c1-d607c8f3192c.gif" width="500" height="500">|
 
 * Structure 🌲
 
