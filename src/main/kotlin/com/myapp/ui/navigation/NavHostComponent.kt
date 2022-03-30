@@ -120,7 +120,7 @@ class NavHostComponent(
                 fizibiliteModel = config.fizibiliteModel,
                 clickedItemIdFromSavedScreen = config.clickedItemIdFromSavedScreen,
                 fourthToFirstScreen = ::fourthToFirstScreen,
-
+                windowState = windowState
             )
             is Config.Settings -> SettingsScreenComponent(
                 appComponent = appComponent,

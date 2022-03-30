@@ -1,15 +1,16 @@
 package com.myapp.data.repo
 
 import com.myapp.data.core.ChromeDriverSeleniumHandle
-import com.myapp.data.core.eliminateTurkishCharacters
-import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_1
 import com.myapp.data.core.Constants.BIRIM_SATIS_FIYATI_ENDEKS_URL_2
 import com.myapp.data.core.Constants.DB_PATH
 import com.myapp.data.core.Constants.IMAR_URL
+import com.myapp.data.core.Constants.SCREEN_IMAGE_DEFAULT_PATH
 import com.myapp.data.core.Response
+import com.myapp.data.core.eliminateTurkishCharacters
 import com.myapp.data.core.inAppCalculationForFeasibility
 import com.myapp.data.model.CalculationResult
+import com.myapp.data.model.FizibiliteModel
 import com.myapp.data.model.SavedCalculationDto
 import com.myapp.data.util.getAmount
 import kotlinx.coroutines.*
@@ -26,34 +27,18 @@ import org.kodein.memory.util.UUID
 import org.openqa.selenium.By
 import org.openqa.selenium.Point
 import org.openqa.selenium.support.ui.Select
+import java.awt.Dimension
+import java.awt.Rectangle
+import java.awt.Robot
+import java.awt.Toolkit
+import java.io.File
+import javax.imageio.ImageIO
 import javax.inject.Inject
+import javax.swing.JFileChooser
+import javax.swing.JOptionPane
+
 
 class MyRepo @Inject constructor() {
-
-    init {
-        try {
-
-
-
-//            fun load(db: DB, id: String): SavedCalculationDto = db.get(db.keyById(id))!!
-//
-//            fun test(db: DB) {
-//                val id = UUID.randomUUID().toString() // Kodein-DB provides the UUID util
-//
-//                val savedCalculationDto1 = SavedCalculationDto(id = id, FizibiliteModel(), CalculationResult())
-//                //Store
-//                store(db, savedCalculationDto1)
-//                //Load
-//                val savedCalculationDto2 = load(db, id)
-//
-//                println(savedCalculationDto2)
-//            }
-
-
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
-    }
 
     suspend fun getArsaAlaniVeMahalleAdiWithSelenium(fizibiliteModel: FizibiliteModel): Flow<Response<FizibiliteModel>> = callbackFlow {
 
@@ -86,7 +71,10 @@ class MyRepo @Inject constructor() {
                 mahalle = mahalleSelector.text.toString().eliminateTurkishCharacters().lowercase().filter { !it.isWhitespace() }
                 //result
 
-                delay(3000) //Harita gelene kadar nasıl bekleteceğim.
+
+                ChromeDriverSeleniumHandle.waitUntilCssKeyValue("//*[@id=\"lblLoading\"]",10,"display", "none")
+                delay(1000)
+
                 imagePath = ChromeDriverSeleniumHandle.getScreenShot("//*[@id=\"myCanvas\"]") //SS almayı deniyorum
 
                 //Result
@@ -148,8 +136,6 @@ class MyRepo @Inject constructor() {
                 driver.get(BIRIM_SATIS_FIYATI_ENDEKS_URL_2)
 
                 ChromeDriverSeleniumHandle.waitUntilVisibilityOfElement("/html/body/div[3]/div/ul",5)
-
-                //*[@id="bodycontainer"]/div[2]
 
                 ChromeDriverSeleniumHandle.sendHumanLikeSelectAndClick(
                     "//*[@id=\"ddlReiCity\"]",
@@ -319,6 +305,42 @@ class MyRepo @Inject constructor() {
 
         }catch (e:Exception){
             emit(Response.Error(e.localizedMessage ?: "ERROR MESSAGE"))
+        }
+    }
+
+    fun getScreenImage (projectName: String, windowPositionX: Int, windowPositionY: Int, windowSizeX:Int, windowsSizeY: Int){
+
+        val screenRect = Rectangle(
+            Dimension(Toolkit.getDefaultToolkit().getScreenSize())
+        )
+
+        val capture = Robot().createScreenCapture(screenRect)
+
+        val croppedCapture = capture.getSubimage(
+            windowPositionX,
+            windowPositionY,
+            windowSizeX,
+            windowsSizeY)
+
+        val fileChooser = JFileChooser()
+        fileChooser.currentDirectory = File(SCREEN_IMAGE_DEFAULT_PATH)
+        fileChooser.selectedFile = File("${projectName}_rapor")
+        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+
+            val currentPath = fileChooser.currentDirectory.absolutePath
+            val currentName = fileChooser.selectedFile.name
+
+            val path = "${currentPath}\\${currentName}.png"
+            val destFile = File(path)
+
+            if(destFile.exists()){
+                val result = JOptionPane.showConfirmDialog(fileChooser,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION)
+                when(result){
+                    JOptionPane.YES_OPTION -> ImageIO.write(croppedCapture,"png",destFile)
+                }
+            }else{
+                ImageIO.write(croppedCapture,"png",destFile)
+            }
         }
     }
 }

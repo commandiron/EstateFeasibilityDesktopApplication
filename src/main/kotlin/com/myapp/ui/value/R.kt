@@ -27,6 +27,6 @@ object R {
 
         const val ACTION_FOURTH_GERI_DON = "Geri Dön"
         const val ACTION_FOURTH_KAYDET = "Verileri Kaydet"
-        const val ACTION_FOURTH_CIKTI_AL = "Çıktı Al"
+        const val ACTION_FOURTH_RAPOR_AL = "Rapor Al"
     }
 }

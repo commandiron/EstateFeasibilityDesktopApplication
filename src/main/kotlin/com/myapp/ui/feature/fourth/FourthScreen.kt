@@ -1,13 +1,21 @@
 package com.myapp.ui.feature.fourth
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -18,15 +26,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.WindowState
 import com.arsa_fizibilite_app_by_command.ui.value.R
 import com.myapp.data.model.CalculationResult
 import com.myapp.data.model.FizibiliteModel
 import com.myapp.util.FormatNumbers
-import java.awt.Rectangle
-import java.awt.Robot
-import java.awt.Toolkit
+import com.myapp.util.PathToImageBitmap
 import java.io.File
-import javax.imageio.ImageIO
 
 @Composable
 fun FourthScreen(
@@ -35,6 +41,7 @@ fun FourthScreen(
     fizibiliteModelFromThirdScreen: FizibiliteModel,
     clickedItemIdFromSavedScreen: String,
     fourthToFirstScreen:()  -> Unit,
+    windowState: WindowState
 ) {
     //Model for view
     var fizibiliteModel by remember { mutableStateOf(FizibiliteModel()) }
@@ -127,24 +134,29 @@ fun FourthScreen(
             }
 
             Row(modifier = Modifier.weight(5f).padding(10.dp)) {
-                Card(
-                    modifier = Modifier.weight(1f),
-                    elevation = 5.dp,
-                    contentColor = Color.Black
+                Box(
+                    modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                    contentAlignment = Alignment.Center
                 ) {
                     if(imagePath.isNotEmpty()){
-                        val file = File(imagePath)
-                        val imageBitmap: ImageBitmap = remember(file) {loadImageBitmap(file.inputStream())}
 
-                        Image(
-                            painter = BitmapPainter(image = imageBitmap),
-                            contentDescription = null,
-                            contentScale = ContentScale.Crop
-                        )
+                        val imageBitmapFromConversion  = PathToImageBitmap.invoke(imagePath)
+
+                        if(imageBitmapFromConversion != null){
+                            val imageBitmap: ImageBitmap = remember {imageBitmapFromConversion}
+                            Image(
+                                painter = BitmapPainter(image = imageBitmap),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop
+                            )
+                        }else{
+                            Text("No image.", fontSize = 10.sp, modifier = Modifier.alpha(0.2f))
+                            Text("No image.", fontSize = 10.sp, modifier = Modifier.alpha(0.2f))
+                        }
                     }
                 }
                 Column(
-                    modifier = Modifier.weight(1f).padding(start = 10.dp),
+                    modifier = Modifier.weight(weight = 1f).padding(start = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Card(
@@ -259,20 +271,10 @@ fun FourthScreen(
                     Button(
                         modifier = Modifier.width(100.dp),
                         onClick = {
-
-                            val screenRect = Rectangle(Toolkit.getDefaultToolkit().screenSize)
-                            val capture = Robot().createScreenCapture(screenRect)
-
-                            val path = "C:/Users/Emir/Desktop/FizibiliteUygulamasi/test123.png"
-                            val destFile = File(path)
-                            ImageIO.write(capture,"png",destFile)
-
-                            //Burda windowun ölçülerini ve positionunu alarak ss alacağız ve kaydedeceğiz, burada kaldım,
-                            //Bunu viewmodelde yapacağız.
-
+                            fourthViewModel.getScreenImage(projeAdi,windowState)
                         }
                     ) {
-                        Text(text = R.string.ACTION_FOURTH_CIKTI_AL)
+                        Text(text = R.string.ACTION_FOURTH_RAPOR_AL)
                     }
                 }
             }

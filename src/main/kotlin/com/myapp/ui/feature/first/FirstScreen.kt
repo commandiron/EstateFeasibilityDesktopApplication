@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arsa_fizibilite_app_by_command.ui.value.R
 import com.myapp.data.model.FizibiliteModel
+import com.myapp.ui.feature.components.CustomButton
 import com.myapp.ui.feature.components.CustomLinearProgressIndicator
 import com.myapp.ui.feature.second.CustomBasicTextField
 
@@ -19,11 +20,11 @@ fun FirstScreen(
     firstToSecondScreen:(FizibiliteModel)  -> Unit
 ) {
 
-    var projeAdi by remember { mutableStateOf("Proje Fizibilite - 1") }
+    var projeAdi by remember { mutableStateOf("") }
     var projeSehir by remember { mutableStateOf("İstanbul") } //Uygulama şu anlık şehir değiştirmeyi desteklemiyor.
     var projeIlce by remember { mutableStateOf("Kadıköy") } //Uygulama şu anlık ilçe değiştirmeyi desteklemiyor.
-    var ada by remember { mutableStateOf("347") }
-    var parsel by remember { mutableStateOf("1")}
+    var ada by remember { mutableStateOf("") }
+    var parsel by remember { mutableStateOf("")}
 
     val fizibiliteModelFromWebScraping by remember { firstViewModel.fizibiliteModelFromInternet}
 

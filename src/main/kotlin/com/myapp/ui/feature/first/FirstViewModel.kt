@@ -39,7 +39,7 @@ class FirstViewModel @Inject constructor(
                             progressIndicatorDuration.value = 0f
                             while(progressIndicatorDuration.value < 1.0f){
                                 delay(20)
-                                progressIndicatorDuration.value += 0.006f
+                                progressIndicatorDuration.value += 0.004f
                             }
                         }
                     }

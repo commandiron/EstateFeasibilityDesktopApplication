@@ -85,7 +85,7 @@ fun ThirdScreen(
                         .align(Alignment.TopStart)
                         .padding(
                             start = Dp(hoverTextStateFirst.positionX + 40),
-                            top = Dp(hoverTextStateFirst.positionY - 56))) {
+                            top = Dp(hoverTextStateFirst.positionY))) {
                     Text(text = "Bu değer internetten çekilmiştir.",fontSize = 10.sp, modifier = Modifier.padding(4.dp), color = Color.Black)
                 }
             }
@@ -95,7 +95,7 @@ fun ThirdScreen(
                         .align(Alignment.TopStart)
                         .padding(
                             start = Dp(hoverTextStateSecond.positionX + 40),
-                            top = Dp(hoverTextStateSecond.positionY - 56))) {
+                            top = Dp(hoverTextStateSecond.positionY))) {
                     Text(text = "Bu değer internetten çekilmiştir.",fontSize = 10.sp, modifier = Modifier.padding(4.dp), color = Color.Black)
                 }
             }

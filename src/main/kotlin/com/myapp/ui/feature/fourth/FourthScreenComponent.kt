@@ -3,6 +3,7 @@ package com.myapp.ui.feature.fourth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.window.WindowState
 import com.arkivanov.decompose.ComponentContext
 import com.arsa_fizibilite_app_by_command.di.AppComponent
 import com.arsa_fizibilite_app_by_command.ui.navigation.Component
@@ -18,6 +19,7 @@ class FourthScreenComponent(
     private val fizibiliteModel: FizibiliteModel,
     private val clickedItemIdFromSavedScreen: String,
     private val fourthToFirstScreen: () -> Unit,
+    private val windowState: WindowState
 ) : Component, ComponentContext by componentContext {
 
     @Inject
@@ -34,6 +36,6 @@ class FourthScreenComponent(
             viewModel.init(scope)
         }
 
-        FourthScreen(viewModel, calculationResult, fizibiliteModel, clickedItemIdFromSavedScreen, fourthToFirstScreen)
+        FourthScreen(viewModel, calculationResult, fizibiliteModel, clickedItemIdFromSavedScreen, fourthToFirstScreen, windowState)
     }
 }

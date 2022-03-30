@@ -10,6 +10,7 @@ data class UseCases @Inject constructor(
     val saveCalculation: SaveCalculation,
     val loadCalculations: LoadCalculations,
     val deleteCalculation: DeleteCalculation,
-    val loadSingleCalculation: LoadSingleCalculation
+    val loadSingleCalculation: LoadSingleCalculation,
+    val getScreenImage: GetScreenImage
 ) {
 }

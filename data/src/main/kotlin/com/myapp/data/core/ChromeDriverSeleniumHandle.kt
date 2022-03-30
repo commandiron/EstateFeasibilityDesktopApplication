@@ -1,5 +1,6 @@
 package com.myapp.data.core
 
+import com.myapp.data.core.Constants.SELENIUM_SCREENSHOT_PATH
 import com.myapp.data.core.KillRunningWinProcesses.isProcessRunning
 import com.myapp.data.core.KillRunningWinProcesses.killProcess
 import io.github.bonigarcia.wdm.WebDriverManager
@@ -33,7 +34,7 @@ object ChromeDriverSeleniumHandle {
         System.setProperty(
             "webdriver.chrome.driver",
             "data/src/main/kotlin/com/myapp/data/drivers/chromedriver.exe"
-        );
+        )
         WebDriverManager.chromedriver().setup() //Bilgisayarda chrome yoksa çalışmıyor, çünkü onun sadece onun driver'ını gömdüm.
 
         //Chrome Options
@@ -125,14 +126,29 @@ object ChromeDriverSeleniumHandle {
     }
 
     fun waitUntilVisibilityOfElement(elementXpath: String, timeOutInSeconds: Long){
-        WebDriverWait(driver,timeOutInSeconds).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)))
+        try {
+            WebDriverWait(driver,Duration.ofSeconds(timeOutInSeconds))
+                .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(elementXpath)))
+        }catch (ex: TimeoutException){
+            ex.printStackTrace()
+        }
+    }
+
+    fun waitUntilCssKeyValue(elementXpath: String, timeOutInSeconds: Long, cssKey: String, cssValue: String){
+
+        try {
+            WebDriverWait(driver, Duration.ofSeconds(timeOutInSeconds))
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("$elementXpath[contains(@style, '$cssKey: $cssValue')]")))
+        }catch (ex: TimeoutException){
+            ex.printStackTrace()
+        }
     }
 
     fun getScreenShot(elementXpath: String): String{
         try {
             val file = driver.findElement(By.xpath(elementXpath)).getScreenshotAs(OutputType.FILE)
             val uuid = UUID.randomUUID().toString()
-            val path = "C:/Users/Emir/Desktop/FizibiliteUygulamasi/${uuid}.png"
+            val path = "$SELENIUM_SCREENSHOT_PATH${uuid}.png"
             val destFile = File(path)
             FileUtils.copyFile(file,destFile)
             return path
