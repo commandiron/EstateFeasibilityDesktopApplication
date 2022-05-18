@@ -8,12 +8,6 @@ Estate feasibility application written in Kotlin using Compose Desktop UI framew
 |----------------------|
 |<img src="https://user-images.githubusercontent.com/50905347/160832909-33be2057-e908-416c-81c1-d607c8f3192c.gif" width="500" height="500">|
 
-* Structure 🌲
-
-|App Package Structure|
-|:-------------------:|
-|<img src="https://user-images.githubusercontent.com/50905347/160125292-79d1c5e5-96ec-4d6b-b3cd-312a4ccad946.png" width="250" height="250">|
-
 * Application - Features ☕
    * Language - Turkish
 
